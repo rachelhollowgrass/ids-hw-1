@@ -1,2 +1,2 @@
 # ids-hw-1
-INtro to Data Science - Homework 1
+Intro to Data Science - Homework 1
