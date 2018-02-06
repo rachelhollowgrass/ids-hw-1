@@ -5,8 +5,50 @@ date: "2/5/2018"
 output: html_document
 ---
 
+My Github repository for my assignments can be found at this URL: [Rachel Hollowgrass IDS HW 1](https://github.com/rachelhollowgrass/ids-hw-1)
+
+### Answers to homework questions
+**Question 1:** There are 23,018 observations and 10 variables in this data set.  
+  
+**Question 2:** Extract the region column and show only the unique values:  
+    *region_col <- WorldCities$region*  
+    *unique(region_col)*
+
+**Question 3:** Unique entries from the country column using one line of code and two %>% operators:  
+    *WorldCities %>% select(country) %>% unique()*  
+
+**Question 4:** Variation on the histogram:  
+    *WorldCities %>% ggplot(aes(x = population)) +*  
+      *geom_histogram() +*  
+      *xlab('Population per City') +*   
+      *ylab('Number of Cities') +*  
+      *ggtitle('Distribution of City Populations') +*  
+      *theme_bw()*  
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-My Github repository for my assignments can be found at this URL: [https://github.com/rachelhollowgrass/ids-hw-1](https://github.com/rachelhollowgrass/ids-hw-1)
 library(mdsr)
 library(tidyverse)
+# “‘{r load_packages, warning=FALSE, message=FALSE}
+data(WorldCities)
+```
+
+``` {r}
+# glimpse(WorldCities)
+# WorldCities <- head(WorldCities, 200)
+# country_col <- WorldCities$country
+# unique(country_col)
+region_col <- WorldCities$region
+unique(region_col)
+WorldCities %>% select(country) %>% unique()
+WorldCities %>% ggplot(aes(x = population)) + 
+  geom_histogram() +
+  xlab('City Population')
+WorldCities %>% ggplot(aes(x = population)) + 
+   geom_histogram() +
+   xlab('Population per City') + 
+   ylab('Number of Cities') + 
+   ggtitle('Distribution of City Populations') + 
+   theme_bw()
+```
