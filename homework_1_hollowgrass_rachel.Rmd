@@ -27,24 +27,42 @@ My Github repository for my assignments can be found at this URL: [Rachel Hollow
 
 
 ```{r setup, include=FALSE}
+# Setting up
 knitr::opts_chunk$set(echo = TRUE)
 library(mdsr)
 library(tidyverse)
+# The following line kept causing errors, so I've commented it out.
 # “‘{r load_packages, warning=FALSE, message=FALSE}
 data(WorldCities)
 ```
 
 ``` {r}
+# Exploring
 # glimpse(WorldCities)
 # WorldCities <- head(WorldCities, 200)
 # country_col <- WorldCities$country
 # unique(country_col)
+
+# WorldCities %>% ggplot(aes(x = population)) + 
+#   geom_histogram() +
+#  xlab('City Population')
+
+
+````
+
+```` {r}
+# Homework question 2
 region_col <- WorldCities$region
 unique(region_col)
+````
+
+```` {r}
+# Homework question 3
 WorldCities %>% select(country) %>% unique()
-WorldCities %>% ggplot(aes(x = population)) + 
-  geom_histogram() +
-  xlab('City Population')
+````
+
+```` {r}
+# Homework question 4
 WorldCities %>% ggplot(aes(x = population)) + 
    geom_histogram() +
    xlab('Population per City') + 
