@@ -1,0 +1,29 @@
+title: "COMPSCIX 415.2 Homework 2F"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+**Question 1:** Look at the data graphics at the following link: [What is a Data Scientist](https://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/3/2/1330695817953/EMC2-graphic-on-data-scie-008.jpg). Please briefly critique the designer’s choices. What works? What doesn’t work? What would you have done differently?  
+
+There is a lot to respond to, in both the graphic and text content.  
+
+In the graphic, "Business Intelligence professionals overwhelmingly …", the pairs of circles give the false impression that each pair perhaps makes up 100% of something, despite the percentages not adding up. I might have used bar charts with counts instead.  
+
+In the graphic, "Data scientists believe …", the pie chart does not communicate much to me. I would have used a bar chart. Also, some historical trends such as the number of Data scientists employed over the years could have added insight.  
+
+Two labels in the graphic, "Characteristics of Data Scientists" read "Middle" and "Normal Data Science". It is not clear exactly what "Middle" or "Normal" refer to. To distinguish the content from "Big Data "Science", I would have used terms with less statistical implication such as "Business Intelligence" or "20th Century".  
+
+In the graphic, "Who does a data scientist work with?" I would have used a bar chart instead of boxes of equal size. The equal size gives the false impression that all values are the same.  
+
+Text content:  
+
+The topic question in light blue at the top of the page asks "Who are data science practitioners … and why are they so different?" The preceding text does not describe any differences between data science practitioners (DSP) and non-practitioners; it does say that the demand for DSPs has outpaced supply. Instead of "Why are they so different?" I would have asked "What are they like?" as a prelude to the descriptive statistics that follow.     
+
+The next line begins "Over 2/3 believe …" but does not state who is doing the believing. Given the other content, I would guess the author had "business intelligence professionals" in mind. Also, the statistic is not directly attributed to any source, though a note at the bottom states a source as "EMC Data Scientist Study, 2011" without any further information. A quick Google search found An "IT Career Finder" [page](https://www.itcareerfinder.com/it-careers/big-data-scientist.html) that refers to EMC, so perhaps it is a legitimate organization, but I would rather not have to be so uncertain about a data source.
