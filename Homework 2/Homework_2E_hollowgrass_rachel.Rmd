@@ -1,0 +1,32 @@
+title: "COMPSCIX 415.2 Homework 2E"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+### Section 3.7.1
+
+
+**Exercise 2:** What does geom_col() do? How is it different to geom_bar()?
+
+Both draw bar charts. The bars that 'geom_col()' draws reflect the data values, which allows then to be plotted with a second variable. The bars that 'geom_bar()' draws are the counts of those data values, which requires the variable to be plotted alone (with the count).
+
+**geom_col()**: The y-axis tick labels show actual 'hwy' values.
+
+```{r}
+ggplot(data = mpg) +
+  geom_col(mapping = aes(x = displ, y = hwy))
+```
+
+**geom_bar()**: The y-axis tick labels show counts of values.
+
+```{r}
+ggplot(data = mpg) +
+  geom_bar(mapping = aes(x = displ))
+```
