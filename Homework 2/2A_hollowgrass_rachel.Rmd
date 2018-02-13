@@ -11,6 +11,7 @@ library(tidyverse)
 ```
 
 ### Section 3.2.4
+
 **Exercise 1:** Wihtout a geom, R shows a gray rectangle.
 
 ```{r}
@@ -23,4 +24,23 @@ ggplot(data = mpg)
 ?mpg
 ```
 
-**Exercise 3:** The mpg data frame has 234 rows and 11 columns.
+**Exercise 3:** The 'drv' variable has three values: {'f','r','4']. It describes whether a vehicle is front-, rear- or 4-wheel drive. 
+
+```{r}
+?mpg
+```
+
+**Exercise 4:** Plot of 'hwy' vs. 'cyl': 
+
+```{r}
+ggplot(data = mpg) + 
+geom_point(mapping = aes(x = hwy, y = cyl))
+```
+
+**Exercise 5:** Plot of 'class' vs. 'drv': This plot has limited usefulness because each class of car may have multple models and/or years with the same 'drv' value. Adding 'position = "jitter"' to the mapping would reveal the hidden points.
+
+```{r}
+ggplot(data = mpg) + 
+geom_point(mapping = aes(x = class, y = drv))
+```
+
