@@ -13,7 +13,7 @@ library(tidyverse)
 
 ### Section 3.2.4
 
-**Exercise 1:** Wihtout a geom, R shows a gray rectangle.
+**Exercise 1:** Without a geom, giving ggplot only a data frame results in a gray rectangle because neither the axes nor the presentation style have been specified.
 
 ```{r}
 ggplot(data = mpg)
