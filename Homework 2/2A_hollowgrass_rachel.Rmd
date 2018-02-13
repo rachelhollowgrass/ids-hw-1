@@ -1,0 +1,26 @@
+---
+title: "COMPSCIX 415.2 Homework 2A"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output: html_document
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+### Section 3.2.4
+**Exercise 1:** Wihtout a geom, R shows a gray rectangle.
+
+```{r}
+ggplot(data = mpg)
+```
+
+**Exercise 2:** The mpg data frame has 234 rows and 11 columns.
+
+```{r}
+?mpg
+```
+
+**Exercise 3:** The mpg data frame has 234 rows and 11 columns.
