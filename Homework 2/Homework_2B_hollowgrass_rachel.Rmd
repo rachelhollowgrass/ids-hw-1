@@ -1,0 +1,91 @@
+title: "COMPSCIX 415.2 Homework 2B"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+### Section 3.3.1
+
+**Exercise 1:** The points are not blue because the 'color = "blue"' snippet is a parameter to the 'aes' function, suggeseting that '"blue"' is a variable like 'class'. R is forgiving in not returning an error when it cannot find a variable named '"blue"'.     
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+**Exercise 2:** These variables in mpg are categorical:
+* manufacturer
+* model
+* trans
+* drv
+* fl
+* class
+  
+These variables in mpg are continuous:
+* displ
+* year
+* cyl
+* cty
+* hwy
+ 
+The 'head()' function shows the observations and variables in table form:
+
+```{r}
+head(mpg)
+```
+
+**Exercise 3:** Mapping 'cty' to color and size.
+
+'ggplot()' could not apply 'shape' to a continous variable because 'shape' is for categorical varaibles.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy, color = cty, size = cty))
+```
+
+**Exercise 4:** Applying the same variable to multiple aesthetics results in theesthetics layered on top of each other, with the last aesthetic rendered on top of underlying layers.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy, size = cty)) + 
+  geom_point(mapping = aes(x = cty, y = hwy, color = cty))  
+```
+
+**Exercise 5:** The 'stroke' aesthetic is the weight of the outline of a point. I did not text all 5 point shapes, but it seems to work with all of them. 'fill' only works with point shapes that have fills such as 21 (filled circle) and 22 (filled square) but not 4 (X) or 8 (star).
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy, size = cty), pch = 24, fill = "green", stroke = 2)
+```
+
+
+**Exercise 6:** Map an aesthetic to something other than a variable name e.g. a conditional statement results in a Boolean display with values indicated by color.
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy, color = displ < 5))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
