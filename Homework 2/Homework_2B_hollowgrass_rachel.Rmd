@@ -49,7 +49,7 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = cty, y = hwy, color = cty, size = cty))
 ```
 
-**Exercise 4:** Applying the same variable to multiple aesthetics results in theesthetics layered on top of each other, with the last aesthetic rendered on top of underlying layers.
+**Exercise 4:** Applying the same variable to multiple aesthetics results in the aesthetics layered on top of each other, with the last aesthetic rendered on top of underlying layers.
 
 ```{r}
 ggplot(data = mpg) + 
@@ -59,12 +59,10 @@ ggplot(data = mpg) +
 
 **Exercise 5:** The 'stroke' aesthetic is the weight of the outline of a point. I did not text all 5 point shapes, but it seems to work with all of them. 'fill' only works with point shapes that have fills such as 21 (filled circle) and 22 (filled square) but not 4 (X) or 8 (star).
 
-
 ```{r}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cty, y = hwy, size = cty), pch = 24, fill = "green", stroke = 2)
 ```
-
 
 **Exercise 6:** Map an aesthetic to something other than a variable name e.g. a conditional statement results in a Boolean display with values indicated by color.
 
@@ -75,17 +73,4 @@ ggplot(data = mpg) +
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
