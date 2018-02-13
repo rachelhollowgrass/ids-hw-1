@@ -1,0 +1,47 @@
+title: "COMPSCIX 415.2 Homework 2C"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+### Section 3.5.1
+
+**Exercise 4:** What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+  
+Using faceting instead of the color aesthetic breaks the presentation into smaller groups, which potentially allows the user to focus on areas of interest, sharing some advantages with Tufte's sparklines. Working with smaller groups can become more important with larger datasets, because there is simply more to look at. However, simple faceting may not provide interesting groups and can sometimes break up interesting groups.
+
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + facet_wrap(~ cty, nrow = 2)
+```
+
+**Exercise 5:** Read '?facet_wrap'. What does 'nrow' do? What does 'ncol' do? What other options control the layout of the individual panels? Why doesn’t 'facet_grid()' have 'nrow' and 'ncol' argument?
+  
+When using 'facet_wrap()', 'nrow' and 'ncol' set the number of rows and columns. 
+  
+These options control the layout of the individual panels:  
+* 'strip.position' relocates labels.
+* 'scales' affects how the data is displayed within a panel.
+* 'labeller' affects the label strings.
+  
+'facet_grid()' does not have 'nrow' and 'ncol' arguments because it uses variables to define how its rows and columns are laid out.
+
+
+```{r}
+?facet_wrap
+```
+
+
+
+
+
+
+
+
