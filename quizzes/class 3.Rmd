@@ -1,0 +1,29 @@
+title: "COMPSCIX 415.2 Homework 2A"
+author: "Rachel Hollowgrass"
+date: "2/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = drv, fill = class), 
+  position = "dodge") + 
+  xlab("Drive of Vehicle") + 
+  coord_flip()
+```
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_histogram(fill = "green", color = "red", 
+  mapping = aes(x = carat, fill = clarity)) + 
+  xlab("Carat of Diamond") + 
+  coord_flip()
+```
+
