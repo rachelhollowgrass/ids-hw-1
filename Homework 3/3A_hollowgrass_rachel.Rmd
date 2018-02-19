@@ -1,0 +1,60 @@
+---
+title: "COMPSCIX 415.2 Homework 2A"
+author: "Rachel Hollowgrass"
+date: "2/20/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+### Section 3.8.1
+
+**Exercise 1:** What is the problem with this plot? How could you improve it?
+
+Many points are hiden because they are superimposed on each other. Using 'jitter' would show all of the points:
+
+
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point() +  
+  geom_jitter()
+```
+
+**Exercise 2:** What parameters to 'geom_jitter()' control the amount of jittering?
+
+Using 'geom_jitter(width = A, height = B)' controls the jittering by amount 'A' and vertically by 'B'.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point() +  
+  geom_jitter(width = 0, height = 2)
+```
+
+**Exercise 3:** Compare and contrast 'geom_jitter()' with 'geom_count()'.
+
+Both attempt to show how many points share coordinates. 'geom_jitter()' shows points sharing coordinate as clustered around those coordinates. 'geom_count()' does not offeset the points; instead, it shows a single point whose size represents the number of points that share those coordinates.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_count()
+```
+
+**Exercise 4:** What’s the default position adjustment for 'geom_boxplot()'? Create a visualisation of the 'mpg' dataset that demonstrates it.
+
+The first example below shows the default positioning for 'geom_boxplot'. However, there do not appear to be any overlapping points, because 'position_dodge' does not reveal any.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = drv, y = hwy)) + 
+  geom_boxplot()
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = drv, y = hwy)) + 
+  geom_boxplot(position = position_dodge(width = 2))
+```
+
