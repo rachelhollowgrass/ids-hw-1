@@ -264,8 +264,50 @@ library(tidyverse)</code></pre>
 ## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
 ## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 <p><strong>Exercise 2:</strong> Another useful dplyr filtering helper is ‘between()’. What does it do? Can you use it to simplify the code needed to answer the previous challenges?</p>
+<p>‘between()’ offers a more readable way of requesting values between two limits, inclusive. Questions 4 and 7 could have been written as:</p>
+<blockquote>
+<p>Question 4:<br />
+As is: filter(flights, month %in% c(7, 8, 9))<br />
+Rewritten: filter(flights, between(month, 7, 9))</p>
+</blockquote>
+<blockquote>
+<p>Question 7:<br />
+As is: filter(flights, dep_time &gt;= 0, dep_time &lt;= 6)<br />
+Rewritten: filter(flights, between(dep_time, 0, 6))</p>
+</blockquote>
 <p><strong>Exercise 3:</strong> How many flights have a missing ‘dep_time’? What other variables are missing? What might these rows represent?</p>
-<p><strong>Exercise 4:</strong> Why is ‘NA ^ 0’ not missing? Why is ‘NA | TRUE’ not missing? Why is ‘FALSE &amp; NA’ not missing? Can you figure out the general rule? (‘NA * 0’ is a tricky counterexample!)</p>
+<p>There are 8,255 flights wihout a departure time. These flights may hav eeen cancelled.</p>
+<pre class="r"><code>filter(flights, is.na(dep_time))</code></pre>
+<pre><code>## # A tibble: 8,255 x 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+##  1  2013     1     1       NA           1630        NA       NA
+##  2  2013     1     1       NA           1935        NA       NA
+##  3  2013     1     1       NA           1500        NA       NA
+##  4  2013     1     1       NA            600        NA       NA
+##  5  2013     1     2       NA           1540        NA       NA
+##  6  2013     1     2       NA           1620        NA       NA
+##  7  2013     1     2       NA           1355        NA       NA
+##  8  2013     1     2       NA           1420        NA       NA
+##  9  2013     1     2       NA           1321        NA       NA
+## 10  2013     1     2       NA           1545        NA       NA
+## # ... with 8,245 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
+## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p><strong>Exercise 4:</strong></p>
+<p><em>Why is ‘NA ^ 0’ not missing?</em></p>
+<p>Any number to the 0th power is defined to be 1 (which would not be missing), with the exception of 0^0, which is not defined. Assuming that NA has a numeric value, If NA is defined to not be 0, then NA ^ 0 is 1.</p>
+<p><em>Why is ‘NA | TRUE’ not missing?</em></p>
+<p>For any value X, ‘X | TRUE’ is TRUE. Therefore, ‘NA | TRUE’ is not missing.</p>
+<p><em>Why is ‘FALSE &amp; NA’ not missing?</em></p>
+<p>For any value X, ‘FALSE &amp; X’ is FALSE Therefore, ‘FALSE &amp; NA’ is not missing.</p>
+<p><em>Can you figure out the general rule? (‘NA * 0’ is a tricky counterexample!)</em></p>
+<p>If NA always has a numeric value and if NA is defined to not be 0, then NA could follow the rules for numerical values, such as:<br />
+NA ^ 0 = 1<br />
+0 / NA = 0<br />
+NA * 0 = 0</p>
+<p>However, from my perspective, assuming that NA is <strong>not</strong> 0, or that it even is a number is assuming too much. ‘NA’ means that we do not know. If other values for a variable are all strings, I would assume that any missing value would also be a string if it were to be filled in later.</p>
 </div>
 
 
