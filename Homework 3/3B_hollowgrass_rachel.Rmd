@@ -1,0 +1,34 @@
+---
+title: "COMPSCIX 415.2 Homework 3B"
+author: "Rachel Hollowgrass"
+date: "2/20/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+### Section 3.9.1
+
+**Exercise 2:** What does 'labs()' do? Read the documentation.
+
+From the [ggplot](http://ggplot2.tidyverse.org/reference/labs.html) docs, 'labs()' can specify the "lables" for a graph, including the overall title, and axes titles.
+
+**Exercise 4:** _What does the plot below tell you about the relationship between city and highway mpg?_
+The plot shows that the city/hwy relationship is generally linear.
+
+_Why is_ 'coord_fixed()' _important?_
+Without it, the units for the two axes are not the same.
+
+_What does_ 'geom_abline()' _do?_
+'geom_abline()' draws a line. Parameters such as y-intercept and slope are not specified, so it defaults to a line through the origin with slope of 1.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point() + 
+  geom_abline() +
+  coord_fixed()
+```
