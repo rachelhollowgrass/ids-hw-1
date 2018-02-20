@@ -276,7 +276,7 @@ As is: filter(flights, dep_time &gt;= 0, dep_time &lt;= 6)<br />
 Rewritten: filter(flights, between(dep_time, 0, 6))</p>
 </blockquote>
 <p><strong>Exercise 3:</strong> How many flights have a missing ‘dep_time’? What other variables are missing? What might these rows represent?</p>
-<p>There are 8,255 flights wihout a departure time. These flights may hav eeen cancelled.</p>
+<p>There are 8,255 flights wihout a departure time. These flights may have been cancelled.</p>
 <pre class="r"><code>filter(flights, is.na(dep_time))</code></pre>
 <pre><code>## # A tibble: 8,255 x 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time

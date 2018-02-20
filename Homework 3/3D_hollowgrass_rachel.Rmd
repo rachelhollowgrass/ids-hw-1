@@ -78,7 +78,7 @@ filter(flights, dep_time >= 0, dep_time <= 6)
 
 **Exercise 3:** How many flights have a missing 'dep_time'? What other variables are missing? What might these rows represent?  
 
-There are 8,255 flights wihout a departure time. These flights may hav eeen cancelled.
+There are 8,255 flights wihout a departure time. These flights may have been cancelled.
 
 ```{r}
 filter(flights, is.na(dep_time))
