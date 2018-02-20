@@ -57,4 +57,3 @@ ggplot(data = mpg, mapping = aes(x = drv, y = hwy)) +
 ggplot(data = mpg, mapping = aes(x = drv, y = hwy)) + 
   geom_boxplot(position = position_dodge(width = 2))
 ```
-
