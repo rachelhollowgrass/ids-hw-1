@@ -15,7 +15,7 @@ library(tidyverse)
 
 **Exercise 2:** What does 'labs()' do? Read the documentation.
 
-From the [ggplot](http://ggplot2.tidyverse.org/reference/labs.html) docs, 'labs()' can specify the "lables" for a graph, including the overall title, and axes titles.
+From the [ggplot](http://ggplot2.tidyverse.org/reference/labs.html) docs, 'labs()' can specify the "labels" for a graph, including the overall title, and axes titles.
 
 **Exercise 4:** _What does the plot below tell you about the relationship between city and highway mpg?_
 The plot shows that the city/hwy relationship is generally linear.
