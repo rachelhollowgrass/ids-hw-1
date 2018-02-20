@@ -17,11 +17,16 @@ library(tidyverse)
 **Exercise 1:** Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights.  
 
 > select(flights, dep_time, dep_delay, arr_time, arr_delay)  
+  
 > select(flights, starts_with("dep_"), starts_with("arr_"))  
-> select(flights, ends_with("delay"), matches("^d.._time"), matches("^ar._time"))
-> select(flights, dep_time:dep_time, dep_delay:dep_delay, arr_time:arr_time, arr_delay:arr_delay)
-> select(flights, -year, -month, -day, -sched_dep_time, -sched_arr_time, -carrier, -flight, -tailnum, -origin, -dest, -air_time, -distance, -hour, -minute, -time_hour)
-> select(flights, one_of(c("dep_time","dep_delay","arr_time","arr_delay")))
+  
+> select(flights, ends_with("delay"), matches("^d.._time"), matches("^ar._time"))  
+  
+> select(flights, dep_time:dep_time, dep_delay:dep_delay, arr_time:arr_time, arr_delay:arr_delay)  
+  
+> select(flights, -year, -month, -day, -sched_dep_time, -sched_arr_time, -carrier, -flight, -tailnum, -origin, -dest, -air_time, -distance, -hour, -minute, -time_hour)  
+  
+> select(flights, one_of(c("dep_time","dep_delay","arr_time","arr_delay")))  
 
 **Exercise 2:** What happens if you include the name of a variable multiple times in a select() call?
 

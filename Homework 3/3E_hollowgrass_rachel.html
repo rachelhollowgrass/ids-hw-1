@@ -131,9 +131,22 @@ library(tidyverse)</code></pre>
 <h3>Section 5.4.1</h3>
 <p><strong>Exercise 1:</strong> Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights.</p>
 <blockquote>
-<p>select(flights, dep_time, dep_delay, arr_time, arr_delay)<br />
-select(flights, starts_with(“dep_”), starts_with(“arr_”))<br />
-select(flights, ends_with(“delay”), matches(“^d.._time“), matches(”^ar._time“)) select(flights, dep_time:dep_time, dep_delay:dep_delay, arr_time:arr_time, arr_delay:arr_delay) select(flights, -year, -month, -day, -sched_dep_time, -sched_arr_time, -carrier, -flight, -tailnum, -origin, -dest, -air_time, -distance, -hour, -minute, -time_hour) select(flights, one_of(c(”dep_time“,”dep_delay“,”arr_time“,”arr_delay“)))</p>
+<p>select(flights, dep_time, dep_delay, arr_time, arr_delay)</p>
+</blockquote>
+<blockquote>
+<p>select(flights, starts_with(“dep_”), starts_with(“arr_”))</p>
+</blockquote>
+<blockquote>
+<p>select(flights, ends_with(“delay”), matches(“^d.._time“), matches(”^ar._time“))</p>
+</blockquote>
+<blockquote>
+<p>select(flights, dep_time:dep_time, dep_delay:dep_delay, arr_time:arr_time, arr_delay:arr_delay)</p>
+</blockquote>
+<blockquote>
+<p>select(flights, -year, -month, -day, -sched_dep_time, -sched_arr_time, -carrier, -flight, -tailnum, -origin, -dest, -air_time, -distance, -hour, -minute, -time_hour)</p>
+</blockquote>
+<blockquote>
+<p>select(flights, one_of(c(“dep_time”,“dep_delay”,“arr_time”,“arr_delay”)))</p>
 </blockquote>
 <p><strong>Exercise 2:</strong> What happens if you include the name of a variable multiple times in a select() call?</p>
 <p>R only selects the column once:</p>
