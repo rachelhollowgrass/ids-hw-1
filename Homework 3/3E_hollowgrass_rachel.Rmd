@@ -1,0 +1,52 @@
+---
+title: "COMPSCIX 415.2 Homework 3E"
+author: "Rachel Hollowgrass"
+date: "2/20/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(nycflights13)
+library(tidyverse)
+```
+
+### Section 5.4.1
+
+**Exercise 1:** Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights.  
+
+> select(flights, dep_time, dep_delay, arr_time, arr_delay)  
+> select(flights, starts_with("dep_"), starts_with("arr_"))  
+> select(flights, ends_with("delay"), matches("^d.._time"), matches("^ar._time"))
+> select(flights, dep_time:dep_time, dep_delay:dep_delay, arr_time:arr_time, arr_delay:arr_delay)
+> select(flights, -year, -month, -day, -sched_dep_time, -sched_arr_time, -carrier, -flight, -tailnum, -origin, -dest, -air_time, -distance, -hour, -minute, -time_hour)
+> select(flights, one_of(c("dep_time","dep_delay","arr_time","arr_delay")))
+
+**Exercise 2:** What happens if you include the name of a variable multiple times in a select() call?
+
+R only selects the column once:
+
+```{r}
+select(flights, sched_dep_time, sched_dep_time, sched_dep_time)
+```
+
+**Exercise 3:** What does the one_of() function do? Why might it be helpful in conjunction with this vector?
+
+> vars <- c("year", "month", "day", "dep_delay", "arr_delay")  
+
+'one_of()' allows easy selection from a set of variables.
+
+'one_of()' could be used in a subsequent 'select' statement, e.g., starting from the above statement  
+
+> select(flights, one_of(vars))
+
+**Exercise 4:** Does the result of running the following code surprise you? How do the select helpers deal with case by default? How can you change that default?
+
+> select(flights, contains("TIME"))  
+
+Yes, it surprised me because I expected it to be case sensitive. Apparently the default for select helpers is to be case insensitive. Here's a way to change that:  
+
+```{r}
+select(flights, contains("TIME", ignore.case = FALSE)) 
+```
