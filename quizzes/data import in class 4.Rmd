@@ -9,6 +9,7 @@ output:
 
 ```{r, warning = FALSE, message = FALSE}
 library(rvest)
+library(nycflights13)
 library(tidyverse)
 ```
 
@@ -28,3 +29,35 @@ contact_movie %>%
   html_nodes("#titleCast .itemprop span") %>%
   html_text()
 ```
+
+
+```{r}
+data(iris)
+iris <- as.data.frame(iris)
+iris
+iris <- as_tibble(iris)
+iris
+```
+```{r}
+?flights
+```
+
+```{r}
+file_path <- '../data/flights.csv'
+csv_data <- read_csv(file_path)
+```
+
+  
+```{r}
+write_delim(csv_data, delim = ';', path = '../data/flights_semi.csv')
+```
+
+  
+```{r}
+write_tsv(csv_data, path = '../data/flights_tab.tsv')
+```
+
+```{r}
+saveRDS(csv_data, file = "../data/flights_rds.rds")
+```
+
