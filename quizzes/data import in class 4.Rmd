@@ -8,6 +8,7 @@ output:
 ---
 
 ```{r, warning = FALSE, message = FALSE}
+library(rvest)
 library(tidyverse)
 ```
 
@@ -17,4 +18,13 @@ What is the number and proportion of cancelled flights on Febuary 20th, 2013? Us
 ```{r}
 file_path <- '../data/flights.csv'
 csv_data <- read_csv(file_path)
+```
+
+```{r}
+contact_movie <- read_html("http://www.imdb.com/title/tt0118884/")
+class(contact_movie)
+  
+contact_movie %>%
+  html_nodes("#titleCast .itemprop span") %>%
+  html_text()
 ```
