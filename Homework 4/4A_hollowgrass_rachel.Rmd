@@ -1,0 +1,78 @@
+---
+title: "COMPSCIX 415.2 Homework 4A"
+author: "Rachel Hollowgrass"
+date: "2/27/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(nycflights13)
+library(tidyverse)
+```
+
+### Section 5.6.7
+
+**Exercise 2:** Come up with another approach that will give you the same output as 'not_cancelled %>% count(dest)' and 'not_cancelled %>% count(tailnum, wt = distance)' (without using count()).
+
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>% group_by(dest) %>% summarise(n())
+not_cancelled
+```
+
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>% group_by(tailnum, wt = distance) %>% summarise(n())
+not_cancelled
+```
+
+**Exercise 4:** Look at the number of cancelled flights per day.
+
+```{r}
+# Flights that were cancelled each day:
+cancelled <- flights %>% 
+  filter(is.na(dep_delay), is.na(arr_delay)) %>% group_by(year, month, day) %>% summarise(n())
+cancelled
+```
+
+_Is there a pattern?_ ••• 
+
+_Is the proportion of cancelled flights related to the average delay?_
+
+It does not appear to be.
+
+```{R}
+flights %>% 
+  group_by(year, month, day) %>% 
+  summarise(cancelled_to_non_cancelled = sum(is.na(arr_delay)) / sum(!is.na(arr_delay)), 
+  average_delay = mean(arr_delay, na.rm = TRUE))
+```
+
+**Exercise 5:** Which carrier has the worst delays?
+
+F9, with an average delay of 21.9, has the worst delays.
+
+```{r}
+by_carrier <- group_by(flights, carrier) 
+by_delay <- summarise(by_carrier,
+  count = n(),
+  delay = mean(arr_delay, na.rm = TRUE)
+) %>% count(delay, carrier, sort = TRUE)
+
+by_delay
+```
+
+_Challenge: can you disentangle the effects of bad airports vs. bad carriers? Why/why not? (Hint: think about flights %>% group_by(carrier, dest) %>% summarise(n()))_ ••• 
+
+
+**Exercise 6:** What does the sort argument to 'count()' do? When might you use it?
+
+The sort argument, if true, sorts the first argument in order of the count() results.
+
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>% count(dest, sort = TRUE)
+not_cancelled
+```
