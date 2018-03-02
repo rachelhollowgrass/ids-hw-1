@@ -1,0 +1,37 @@
+---
+title: "COMPSCIX 415.2 Homework 5/Midterm"
+author: "Rachel Hollowgrass"
+date: "3/6/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+### The tidyverse packages (3 points)
+
+**Can you name which package is associated with each task below?**
+Plotting - ggplot
+
+Data munging/wrangling - dplyr
+
+Reshaping (speading and gathering) data -
+
+Importing/exporting data - readr
+
+**Now can you name two functions that you’ve used from each package that you listed above for these tasks?**
+Plotting -
+Data munging/wrangling -
+Reshaping data -
+Importing/exporting data (note that readRDS and saveRDS are base R functions) -
+
+
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point() +  
+  geom_jitter()
+```
