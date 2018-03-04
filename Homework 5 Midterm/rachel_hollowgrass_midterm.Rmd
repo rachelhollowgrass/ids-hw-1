@@ -5,33 +5,49 @@ date: "3/6/2018"
 output:
  html_document:
   self_contained: true
+  toc: true
+  toc_depth: 2
 ---
 
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
 ```
 
-### The tidyverse packages (3 points)
+# The tidyverse packages (3 points)  
 
-**Can you name which package is associated with each task below?**
-Plotting - ggplot
+**1. Can you name which package is associated with each task below?**  
 
-Data munging/wrangling - dplyr
+**Plotting:** ggplot
 
-Reshaping (speading and gathering) data -
+**Data munging/wrangling:** dplyr
 
-Importing/exporting data - readr
+**Reshaping (speading and gathering) data**: tidyr
 
-**Now can you name two functions that you’ve used from each package that you listed above for these tasks?**
-Plotting -
-Data munging/wrangling -
-Reshaping data -
-Importing/exporting data (note that readRDS and saveRDS are base R functions) -
+**Importing/exporting data**: readr
 
+**2. Now can you name two functions that you’ve used from each package that you listed above for these tasks?**  
 
+**Plotting:**  
++ geom_point()
++ geom_boxplot()  
+
+**Data munging/wrangling:**  
+* filter()
+* arrange()  
+
+**Reshaping data**: 
+* gather()
+* spread()  
+
+**Importing/exporting data** _(note that readRDS and saveRDS are base R functions)_: 
+* read_csv()
+* write_tsv()  
+
+# R Basics (1.5 points)
+
+**1. Fix this code _with the fewest number of changes possible_ so it works:**
 
 ```{r}
-ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
-  geom_point() +  
-  geom_jitter()
+#My_data.name___is.too00ooLong! <- c( 1 , 2   , 3 )
 ```
+
