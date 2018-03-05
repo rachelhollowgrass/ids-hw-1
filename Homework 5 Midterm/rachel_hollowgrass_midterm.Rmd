@@ -67,7 +67,7 @@ my_string <- c('has', 'an', 'error', 'in', 'it')
 
 **3. Look at the code below and comment on what happened to the values in the vector.**  
 
-Comment: I assumed that the first, second and last items would have remained integers, but they were converted to strings. In a quick test, I see that unless all vector items are initially numberic, they are all converted to stings.   
+Comment: I assumed that the first, second and last items would have remained integers, but they were converted to strings. In a quick test, I see that unless all vector items are initially numeric, they are all converted to stings.   
 
 ```{r}
 my_vector <- c(1, 2, '3', '4', 5)
@@ -84,9 +84,16 @@ all_but_one_numeric_vector
 
 **1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result.**  
 
+```{r}
+rail_trail_data <- read.csv('../data/rail_trail.txt', sep="|")
+glimpse(rail_trail_data)
+```
+
 **2. Export the file into an R-specific format and name it “rail_trail.rds”. Make sure you define the path correctly so that you know where it gets saved. Then reload the file. Include your export and import code and take another glimpse.**  
 
 ```{r}
-# My_data.name___is.too00ooLong! <- c( 1 , 2   , 3 )
-My_data.name___is.too00ooLong <- c( 1 , 2   , 3 )
+rail_trail_data <- read.csv('../data/rail_trail.txt', sep="|")
+saveRDS(rail_trail_data, file = "../data/rail_trail.rds")
+rail_trail_as_rds <- readRDS('../data/rail_trail.rds')
+glimpse(rail_trail_as_rds)
 ```
