@@ -17,37 +17,76 @@ library(tidyverse)
 
 **1. Can you name which package is associated with each task below?**  
 
-**Plotting:** ggplot
+**Plotting:** <code>ggplot</code>  
 
-**Data munging/wrangling:** dplyr
+**Data munging/wrangling:** <code>dplyr</code>  
 
-**Reshaping (speading and gathering) data**: tidyr
+**Reshaping (speading and gathering) data**: <code>tidyr</code>  
 
-**Importing/exporting data**: readr
+**Importing/exporting data**: <code>readr</code>  
 
 **2. Now can you name two functions that you’ve used from each package that you listed above for these tasks?**  
 
 **Plotting:**  
-+ geom_point()
-+ geom_boxplot()  
+• <code>geom_point()</code>  
+• <code>geom_boxplot()</code>  
 
 **Data munging/wrangling:**  
-* filter()
-* arrange()  
+• <code>filter()</code>  
+• <code>arrange()</code>  
 
-**Reshaping data**: 
-* gather()
-* spread()  
+**Reshaping data**:  
+• <code>gather()</code>  
+• <code>spread()</code>  
 
-**Importing/exporting data** _(note that readRDS and saveRDS are base R functions)_: 
-* read_csv()
-* write_tsv()  
+**Importing/exporting data** _(note that readRDS and saveRDS are base R functions)_:  
+• <code>read_csv()</code>  
+• <code>write_tsv()</code>  
 
 # R Basics (1.5 points)
 
-**1. Fix this code _with the fewest number of changes possible_ so it works:**
+**1. Fix this code _with the fewest number of changes possible_ so it works:**  
+
+The single change is to remove the exclamation point from the end of the variable name:  
 
 ```{r}
-#My_data.name___is.too00ooLong! <- c( 1 , 2   , 3 )
+# My_data.name___is.too00ooLong! <- c( 1 , 2   , 3 )
+My_data.name___is.too00ooLong <- c( 1 , 2   , 3 )
 ```
 
+**2. Fix this code so it works:**  
+
+Changes:  
+• Add a terminal single quote to the last item in the vector.  
+• Change the "C" to lower case.  
+
+```{r}
+# my_string <- C('has', 'an', 'error', 'in', 'it)
+my_string <- c('has', 'an', 'error', 'in', 'it')
+```
+
+**3. Look at the code below and comment on what happened to the values in the vector.**  
+
+Comment: I assumed that the first, second and last items would have remained integers, but they were converted to strings. In a quick test, I see that unless all vector items are initially numberic, they are all converted to stings.   
+
+```{r}
+my_vector <- c(1, 2, '3', '4', 5)
+my_vector
+
+all_numeric_vector <- c(1, 2, 3, 4, 5)
+all_numeric_vector
+
+all_but_one_numeric_vector <- c(1, 2, '3', 4, 5)
+all_but_one_numeric_vector
+```
+
+# Data import/export (3 points)
+
+**1. Download the rail_trail.txt file from Canvas (in the Midterm Exam section here) and successfully import it into R. Prove that it was imported successfully by including your import code and taking a glimpse of the result.**  
+
+**2. Export the file into an R-specific format and name it “rail_trail.rds”. Make sure you define the path correctly so that you know where it gets saved. Then reload the file. Include your export and import code and take another glimpse.**  
+
+```{r}
+# My_data.name___is.too00ooLong! <- c( 1 , 2   , 3 )
+My_data.name___is.too00ooLong <- c( 1 , 2   , 3 )
+```
