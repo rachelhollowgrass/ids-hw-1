@@ -12,6 +12,9 @@ output:
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
 ```
+# Git and Github (1.5 points)
+
+[Github repository 'rachelhollowgrass'](https://github.com/rachelhollowgrass/ids-hw-1/tree/master/Homework%205%20Midterm)
 
 # The tidyverse packages (3 points)  
 
@@ -28,20 +31,28 @@ library(tidyverse)
 **2. Now can you name two functions that you’ve used from each package that you listed above for these tasks?**  
 
 **Plotting:**  
-• <code>geom_point()</code>  
-• <code>geom_boxplot()</code>  
+<ul>
+<li><code>geom_point()</code></li>
+<li><code>geom_boxplot()</code></li>
+</ul>
 
 **Data munging/wrangling:**  
-• <code>filter()</code>  
-• <code>arrange()</code>  
+<ul>
+<li><code>filter()</code></li>
+<li><code>arrange()</code></li>
+</ul>
 
 **Reshaping data**:  
-• <code>gather()</code>  
-• <code>spread()</code>  
+<ul>
+<li><code>gather()</code></li>
+<li><code>spread()</code></li>
+</ul>
 
 **Importing/exporting data** _(note that readRDS and saveRDS are base R functions)_:  
-• <code>read_csv()</code>  
-• <code>write_tsv()</code>  
+<ul>
+<li><code>read_csv()</code></li>
+<li><code>write_tsv()</code></li>
+</ul>
 
 # R Basics (1.5 points)
 
@@ -56,9 +67,11 @@ My_data.name___is.too00ooLong <- c( 1 , 2   , 3 )
 
 **2. Fix this code so it works:**  
 
-Changes:  
-• Add a terminal single quote to the last item in the vector.  
-• Change the "C" to lower case.  
+**Changes:**  
+<ul>
+<li>Add a terminal single quote to the last item in the vector.</li>
+<li>Change the "C" to lower case.</li>
+</ul>  
 
 ```{r}
 # my_string <- C('has', 'an', 'error', 'in', 'it)
@@ -67,7 +80,7 @@ my_string <- c('has', 'an', 'error', 'in', 'it')
 
 **3. Look at the code below and comment on what happened to the values in the vector.**  
 
-Comment: I assumed that the first, second and last items would have remained integers, but they were converted to strings. In a quick test, I see that unless all vector items are initially numeric, they are all converted to stings.   
+**Comment:** I assumed that the first, second and last items would have remained integers, but they were converted to strings. In a quick test, I see that unless all vector items are initially numeric, they are all converted to stings.   
 
 ```{r}
 my_vector <- c(1, 2, '3', '4', 5)
@@ -96,4 +109,44 @@ rail_trail_data <- read.csv('../data/rail_trail.txt', sep="|")
 saveRDS(rail_trail_data, file = "../data/rail_trail.rds")
 rail_trail_as_rds <- readRDS('../data/rail_trail.rds')
 glimpse(rail_trail_as_rds)
+```
+
+# Visualization (6 points)  
+
+**1. Critique the "Mrs. President" graphic: give only three examples of what is wrong with this graphic. Be concise.**  
+
+```{r}
+# ![](../images/mrs-president.jpg)
+```
+
+<ul>
+<li>**Proximity:** The circles in the left column are touching each other, which suggests that they are related, but they are at best of two types (age ranges, and gender) and not related as implied.</li>
+<li>**Size:** The promiment, varied sizes of the circles suggest that their size is important, but as circles the sizes are difficult to compare; however, casual observation suggests that the diameter of the circles more closely corresponds to the labeled values than their area.</li>
+<li>**Color:** Color is used to differentiate between genders and not ages. This seems like a random choice.</li>
+</ul>
+
+**2. Reproduce this graphic [horizontal box plot] using the diamonds data set.**
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, y = carat, fill = cut)) +
+  geom_boxplot() +
+  labs(x = "CUT OF DIAMOND", y = "CARAT OF DIAMOND") + 
+  coord_flip()
+```
+
+```{r}
+# Did not work:
+# ggplot(data = diamonds, mapping = aes(x = cut, y = carat)) +
+#   geom_boxplot() + 
+#   geom_col(aes(x = cut, y = carat, fill = factor(color))) + 
+#   coord_flip()
+```
+
+**3. The previous graphic is not very useful. We can make it much more useful by changing one thing about it. Make the change and plot it again.**
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, y = carat, fill = color)) +
+  geom_boxplot() +
+  labs(x = "CUT OF DIAMOND", y = "CARAT OF DIAMOND") + 
+  coord_flip()
 ```
