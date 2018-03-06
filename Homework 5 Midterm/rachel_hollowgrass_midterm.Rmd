@@ -115,12 +115,8 @@ glimpse(rail_trail_as_rds)
 
 **1. Critique the "Mrs. President" graphic: give only three examples of what is wrong with this graphic. Be concise.**  
 
-```{r}
-# ![](../images/mrs-president.jpg)
-```
-
 <ul>
-<li>**Proximity:** The circles in the left column are touching each other, which suggests that they are related, but they are at best of two types (age ranges, and gender) and not related as implied.</li>
+<li>**Proximity:** The circles in the left column are touching each other, which suggests that they are related, but they are at best of two types (age ranges, and gender) and not related as visually implied.</li>
 <li>**Size:** The promiment, varied sizes of the circles suggest that their size is important, but as circles the sizes are difficult to compare; however, casual observation suggests that the diameter of the circles more closely corresponds to the labeled values than their area.</li>
 <li>**Color:** Color is used to differentiate between genders and not ages. This seems like a random choice.</li>
 </ul>
@@ -129,21 +125,11 @@ glimpse(rail_trail_as_rds)
 
 i was not fully able to reproduce the original graphic. It looks like superimposing a stacked floating bar plot over the carat value would be a good approach, but I did not see an clear way to do that.
 
-# Try anti-dodging and widening the bars.
-
 ```{r}
 ggplot(data = diamonds, mapping = aes(x = cut, y = carat, fill = cut)) +
   geom_boxplot() +
   labs(x = "CUT OF DIAMOND", y = "CARAT OF DIAMOND") + 
   coord_flip()
-```
-
-```{r}
-# Did not work:
-# ggplot(data = diamonds, mapping = aes(x = cut, y = carat)) +
-#   geom_boxplot() + 
-#   geom_col(aes(x = cut, y = carat, fill = factor(color))) + 
-#   coord_flip()
 ```
 
 **3. The previous graphic is not very useful. We can make it much more useful by changing one thing about it. Make the change and plot it again.**
@@ -188,9 +174,9 @@ There are 834/53940 diamonds that meet these criteria:
 The proportion is 1.5% of the total.
 
 ```{r}
-diamonds_expensive <- filter(diamonds, price > 10000, carat < 1.5) %>% select(price, carat) %>% arrange(order(price))
-proportion <- count(diamonds_expensive) / count(diamonds)
-count(diamonds_expensive)  
+diamonds_filtered <- filter(diamonds, price > 10000, carat < 1.5) %>% select(price, carat) %>% arrange(order(price))
+proportion <- count(diamonds_filtered) / count(diamonds)
+count(diamonds_filtered)  
 count(diamonds)  
 proportion
 ```
@@ -273,33 +259,74 @@ tx_criteria_sales %>%
 
 **4. What kind of relationship do you think exists between the number of listings and the number of sales? Check your assumption and show your work.**
 
-•••
+Unless there are extreme forces at work, I would expect listings to reflect demand, with a similar ratio of sales to listings each month.  
+This turned out not to be true at all. After including the ratio between the two, I don't see any simple pattern.
+
+```{r}
+sales_to_listings <- txhousing
+sales_to_listings %>% group_by(year, month) %>% select(year, month, listings, sales)
+transmute(sales_to_listings, year, month, listings, sales, ratio = sales / listings) %>% arrange(order(ratio))
+```
 
 **5. What proportion of sales is missing for each city?**
 
-•••
+The proportion of "sales is missing for each city" is the number of missing sales entries per city divided by the total number of rows for that city. It turns out that all cities have the same number of <code>sale_entries_per_city</code>: 187.
+
+Dividing the number of <code>missing_sales</code> by <code>entries_per_city</code> yields the <code>proportion_of_missing_sales</code>.
+
+
+```{r}
+# First, find out how many sales entries there are per city.
+housing_by_city <- 
+txhousing %>% 
+  group_by(city) %>% 
+  summarize(sale_entries_per_city = n())
+
+housing_by_city
+
+entries_per_city <- as.numeric(housing_by_city[1, "sale_entries_per_city"])
+
+# Next, take the sale_entries_per_city value from above (187) and divide the number of missing values by it.
+txhousing %>% 
+  group_by(city) %>% 
+  filter(is.na(sales)) %>% 
+  summarize(missing_sales = n(), proportion_of_missing_sales = n() / entries_per_city)
+```
 
 **6. Looking at only the cities and months with greater than 500 sales:**
+
+```{r}
+sales_over_500 <- group_by(txhousing, city, year, month) %>% 
+  filter(sales > 500) %>% select(city, year, month, sales) %>% 
+  arrange(desc(sales))
+sales_over_500
+```
 
 <ul>
 <li>**Are the distributions of the median sales price (column name median), when grouped by city, different? The same? Show your work.**</li>
 </ul>
 
+There is variation in the median sales price distributions by city. When aggregated across all cities, the spread has a positive skew (tail to the right) suggesting that there may be multiple factors involved. Invidually, each city has it's own distribution. A few such as Arlington and Garland, have a narrower spread than others such as Galveston and Midland.
+
+```{r}
+median_not_na <- filter(txhousing, !(is.na(median)))
+
+ggplot(median_not_na, aes(x = median)) + 
+  geom_histogram(fill='lightblue', color='black', binwidth=10000)
+
+ggplot(median_not_na, aes(x = median)) + 
+  geom_histogram(fill='red', color='black', binwidth=10000) + 
+  facet_wrap(~ city, nrow = 8)
+```
 
 <ul>
 <li>**Any cities that stand out that you’d want to investigate further?**</li>
 </ul>
 
+Abeline, El Paso , Longview-Marshall and San Antonio appear to have overlapping curves (two humps). I wonder what might be causing that, though it might be an effect of the bin width.
 
 <ul>
 <li>**Why might we want to filter out all cities and months with sales less than 500?**</li>
 </ul>
 
-•••
-
-
-
-```{r}
-txhousing
-```
-
+When there are fewer than a certain number of sales, the statistics on those sales become less meaningful. For a large real estate company, 500 might be a good threshold to use. For someone wanting to know how likely they could buy a house, the threshold could be lower.
