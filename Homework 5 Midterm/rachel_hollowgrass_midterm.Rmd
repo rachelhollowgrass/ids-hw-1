@@ -129,6 +129,8 @@ glimpse(rail_trail_as_rds)
 
 i was not fully able to reproduce the original graphic. It looks like superimposing a stacked floating bar plot over the carat value would be a good approach, but I did not see an clear way to do that.
 
+# Try anti-dodging and widening the bars.
+
 ```{r}
 ggplot(data = diamonds, mapping = aes(x = cut, y = carat, fill = cut)) +
   geom_boxplot() +
@@ -175,19 +177,129 @@ diamond_prices <- select(diamonds, price, carat)
 transmute(diamond_prices, price, carat, price_per_carat = price / carat)
 </pre>
 
-**2. For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.**
+**3. For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.**
+
+There are 834/53940 diamonds that meet these criteria:
+<ul>
+<li><code>price > 10000</code></li>
+<li><code>carat < 1.5</code></li>
+</ul>
+
+The proportion is 1.5% of the total.
+
+```{r}
+diamonds_expensive <- filter(diamonds, price > 10000, carat < 1.5) %>% select(price, carat) %>% arrange(order(price))
+proportion <- count(diamonds_expensive) / count(diamonds)
+count(diamonds_expensive)  
+count(diamonds)  
+proportion
+```
 
 <ul>
 <li>**Do the results make sense? Why?**</li>
 </ul>
 
-No, yes, investigate  
+To a degree. Because heavier diamonds (greater carats) are generally more valuable, it makes sense that low weight diamonds that are high priced would be rare. This heat map shows that many diamonds fit the above criteria:
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = carat, y = price)) +
+  geom_bin2d()
+```
 
 <ul>
 <li>**Do we need to be wary of any of these numbers? Why?**</li>
 </ul>
 
-Maybe.  
+The data may be incomplete; that is, some diamonds priced at over $10,000 may not have carat values, and vice versa. Also, the price of diamonds is not only related to their weight but also their cut, color, etc.
+
+# EDA (6 points)
+
+Take a look at the <code>txhousing</code> data set that is included with the <code>ggplot2</code> package and answer these questions:
+
+**1. During what time period is this data from?**
+
+The data in the <code>txhousing</code> data set is from the years 2000 to 2015.
+
+**2. How many cities are represented?**
+
+There are 46 cities represented.
+
+```{r}
+tx_cities <- txhousing
+tx_cities %>%
+  group_by(city) %>%
+  summarize(count = n())
+```
+
+**3. Which city, month and year had the highest number of sales?**
+
+Individually:
+<ul>
+<li>Of the cities, Houston had the most sales.</li>
+<li>Of the months, December had the most sales.</li>
+<li>Of the years, 2014 had the most sales.</li>
+</ul>
+
+Combined:
+<ul>
+<li>In July 2015, Houston had the most sales for any city for any month in any year.</li>
+</ul>
+
+```{r}
+tx_city_sales <- txhousing
+tx_city_sales %>%
+  group_by(city) %>% 
+  summarize(total_sales = sum(sales)) %>% 
+  arrange(desc(total_sales))
+
+tx_month_sales <- txhousing
+tx_month_sales %>%
+  group_by(month) %>% 
+  summarize(total_sales = sum(month)) %>% 
+  arrange(desc(total_sales))
+
+tx_year_sales <- txhousing
+tx_year_sales %>%
+  group_by(year) %>% 
+  summarize(total_sales = sum(year)) %>% 
+  arrange(desc(total_sales))
+
+tx_criteria_sales <- txhousing
+tx_criteria_sales %>%
+  group_by(city,year,month) %>% 
+  summarize(total_sales = sum(sales)) %>% 
+  arrange(desc(total_sales))
+```
+
+**4. What kind of relationship do you think exists between the number of listings and the number of sales? Check your assumption and show your work.**
+
+•••
+
+**5. What proportion of sales is missing for each city?**
+
+•••
+
+**6. Looking at only the cities and months with greater than 500 sales:**
+
+<ul>
+<li>**Are the distributions of the median sales price (column name median), when grouped by city, different? The same? Show your work.**</li>
+</ul>
 
 
+<ul>
+<li>**Any cities that stand out that you’d want to investigate further?**</li>
+</ul>
+
+
+<ul>
+<li>**Why might we want to filter out all cities and months with sales less than 500?**</li>
+</ul>
+
+•••
+
+
+
+```{r}
+txhousing
+```
 
