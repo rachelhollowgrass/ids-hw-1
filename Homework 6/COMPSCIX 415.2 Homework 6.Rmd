@@ -1,0 +1,38 @@
+---
+title: "COMPSCIX 415.2 Homework 6"
+author: "Rachel Hollowgrass"
+date: "3/13/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(mosaicData)
+library(tidyverse)
+```
+
+### Exercise 1
+
+Load the <code>Whickham</code> dataset (<code>data(Whickham)</code>). You will need to load the mosaicData package first, but I also included the data as an rds file on Canvas if you would rather download it there and load it with <code>readRDS()</code>.  
+
+Look at the help file on this dataset to learn a bit about it.  
+
+**1.** What variables are in this data set?
+
+The variables in this data set are:
+<ul>
+<li><code>outcome</code></li>
+<li><code>smoker</code></li>
+<li><code>age</code></li>
+</ul>
+
+**2.** How many observations are there and what does each represent?
+
+There are 1,314 observations. Each observation represents the age and tobacco smoking status of voting-age women from Whickham, UK in 1972-1974. The <code>outcome</code> represents a follow-up survey conducted 20 years later, indicating whether or not the woman was alive or dead.
+
+**3.** Create a table (use the R code below as a guide) and a visualization of the relationship between smoking status and outcome, ignoring age. What do you see? Does it make sense?
+
+```{r}
+Whickham %>% count( outcome , smoker )
+```
