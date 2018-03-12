@@ -33,6 +33,12 @@ There are 1,314 observations. Each observation represents the age and tobacco sm
 
 **3.** Create a table (use the R code below as a guide) and a visualization of the relationship between smoking status and outcome, ignoring age. What do you see? Does it make sense?
 
+I associate smoking with death, so I was surprised to see that the proportion of survivors ("alive") was about evenly split between smokers and non-smokers. I was even more surpised that more non-smokers were dead than smokers. I assume that factoring in age and years of smoking would shed some light on this.
+
 ```{r}
-Whickham %>% count( outcome , smoker )
+whickham2 <- Whickham %>% count(smoker, outcome)
+whickham2
+ggplot(whickham2) +
+  geom_col(aes(x = outcome, y = n, fill = smoker), position = "stack") + 
+ labs(x = "Outcome", y = "Smoking Status")
 ```
