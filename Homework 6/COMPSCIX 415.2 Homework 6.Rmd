@@ -90,11 +90,31 @@ sd_samp
 **3.** Pretend the distribution of our **population** of data looks like the plot above. Now take a sample of size n = 30 from a Gamma(1,2) distribution, plot the histogram or density curve, and calculate the mean and standard deviation.
 
 ```{r}
-# 
+population <- tibble(x = rgamma(10000, shape = 1, scale = 2))
+sample_size = 30
+population_sample <- sample_n(population, sample_size)
+# population_sample
+ggplot(population_sample) +
+  geom_histogram(aes(x))
+mean_pop_samp <- population_sample %>% .[['x']] %>% mean()
+sd_pop_samp <- population_sample %>% .[['x']] %>% sd()
+mean_pop_samp
+sd_pop_samp
 ```
 
 **4.** Take a sample of size n = 30, again from the Gamma(1,2) distribution, calculate the mean, and assign it to a vector named mean_samp. Repeat this 10000 times!!!! The code below might help.
 
 ```{r}
-# 
+# create a vector with 10000 NAs
+mean_samp <- rep(NA, 10000)
+
+# start a loop
+for(i in 1:10000) {
+  g_samp <- rgamma(30, shape = 1, scale = 2)
+  mean_samp[i] <- mean(g_samp)
+}
+# Convert vector to a tibble
+mean_samp <- tibble(mean_samp)
+names(mean_samp)[1]<-"x"
+mean_samp %>% ggplot(aes(x)) + geom_histogram()
 ```
