@@ -57,7 +57,7 @@ ggplot(whickham4) +
   facet_wrap(~ age_fct, nrow = 8)
 ```
 
-After factoring by age, it makes sense that more of the younger women (< 45) would be alive, and more of the older women (> 64) would be dead. For the older women, the majority of those still alive did not smoke (28 vs. 6). In addition, for older women, 15% of non-smokers were still alive (28 out of 193), while 12% of smokers were still alive (6 out of 50) .
+After factoring by age, it makes sense that more of the younger women (< 45) would be alive, and more of the older women (> 64) would be dead. For the older women, the majority of those still alive did not smoke (28 vs. 6). In addition, for older women, 15% of non-smokers were still alive (28 out of 193), while 12% of smokers were still alive (6 out of 50). Still, of the older women who have died, many more of them were non-smokers than smokers (65 to 44).
 
 ### Exercise 2
 
