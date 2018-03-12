@@ -50,7 +50,6 @@ whickham3 <- Whickham %>% mutate(age_fct =
                   age > 44 & age <= 64 ~ '45 to 64',
                   age > 64 ~ '65 and over'),
              levels = c('Under 45', '45 to 64', '65 and over')))
-whickham3
 whickham4 <- whickham3 %>% count(smoker, outcome, age_fct)
 whickham4
 ggplot(whickham4) +
