@@ -104,6 +104,10 @@ sd_pop_samp
 
 **4.** Take a sample of size n = 30, again from the Gamma(1,2) distribution, calculate the mean, and assign it to a vector named mean_samp. Repeat this 10000 times!!!! The code below might help.
 
+**5.** Make a histogram of your collection of means from above (<code>mean_samp</code>).
+
+**6.** Calculate the mean and standard deviation of all of your sample means.
+
 ```{r}
 # create a vector with 10000 NAs
 mean_samp <- rep(NA, 10000)
@@ -117,4 +121,52 @@ for(i in 1:10000) {
 mean_samp <- tibble(mean_samp)
 names(mean_samp)[1]<-"x"
 mean_samp %>% ggplot(aes(x)) + geom_histogram()
+
+mean_samp_mean <- mean_samp %>% .[['x']] %>% mean()
+mean_samp_sd <- mean_samp %>% .[['x']] %>% sd()
+mean_samp_mean
+mean_samp_sd
+```
+
+**7.** Did anything surprise you about your answers to #6?
+
+The mean was around 2, as expected. But the standard deviation has ranged between .35 and .38. I expected it to be around 2.
+
+**8.** According to the Central Limit Theorem, the mean of your sampling distribution should be very close to 2, and the standard deviation of your sampling distribution should be close to σn‾√=230‾‾‾√=0.365.  
+
+Repeat #4-#6, but now with a sample of size n = 300 instead. Do your results match up well with the theorem?
+
+Yes, the results match up with the theorem.
+
+**Expected values:**  
+<ul>
+<li>mean = 2.0</li>
+<li>sd =   0.1154701</li>
+</ul>
+
+
+**One result:**  
+<ul>
+<li>mean = 1.998485</li>
+<li>sd = 0.1144379</li>
+</ul>
+
+```{r}
+# create a vector with 10000 NAs
+mean_300_samp <- rep(NA, 10000)
+
+# start a loop
+for(i in 1:10000) {
+  g_300_samp <- rgamma(300, shape = 1, scale = 2)
+  mean_300_samp[i] <- mean(g_300_samp)
+}
+# Convert vector to a tibble
+mean_300_samp <- tibble(mean_300_samp)
+names(mean_300_samp)[1]<-"x"
+mean_300_samp %>% ggplot(aes(x)) + geom_histogram()
+
+mean_300_mean <- mean_300_samp %>% .[['x']] %>% mean()
+mean_300_sd <- mean_300_samp %>% .[['x']] %>% sd()
+mean_300_mean
+mean_300_sd
 ```
