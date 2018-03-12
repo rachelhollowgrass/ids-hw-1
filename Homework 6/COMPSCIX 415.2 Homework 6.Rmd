@@ -40,5 +40,28 @@ whickham2 <- Whickham %>% count(smoker, outcome)
 whickham2
 ggplot(whickham2) +
   geom_col(aes(x = outcome, y = n, fill = smoker), position = "stack") + 
- labs(x = "Outcome", y = "Smoking Status")
+ labs(x = "Outcome", y = "Number")
 ```
+**4.** Recode the <code>age</code> variable into an ordered factor with three categories: age <= 44, age > 44 & age <= 64, and age > 64. Now, recreate visualization from above, but facet on your new age factor. What do you see? Does it make sense?
+
+```{r}
+whickham3 <- Whickham %>% mutate(age_fct = 
+  factor(case_when(age <= 44 ~ 'Under 45',
+                  age > 44 & age <= 64 ~ '45 to 64',
+                  age > 64 ~ '65 and over'),
+             levels = c('Under 45', '45 to 64', '65 and over')))
+whickham3
+whickham4 <- whickham3 %>% count(smoker, outcome, age_fct)
+whickham4
+ggplot(whickham4) +
+  geom_col(aes(x = outcome, y = n, fill = smoker), position = "stack") + 
+  facet_wrap(~ age_fct, nrow = 8)
+```
+
+After factoring by age, it makes sense that more of the younger women (< 45) would be alive, and more of the older women (> 64) would be dead. For the older women, the majority of those still alive did not smoke (28 vs. 6). In addition, for older women, 15% of non-smokers were still alive (28 out of 193), while 12% of smokers were still alive (6 out of 50) .
+
+### Exercise 2
+
+The Central Limit Theorem states that the sampling distribution of sample means is approximately Normal, regardless of the distribution of your population. For this exercise our population distribution will be a Gamma(1,2) distribution, and we’ll show that the sampling distribution of the mean is in fact normally distributed.
+
+**1.** Generate a random sample of size n = 10000 from a gamma(1,2) distribution and plot a histogram or density curve. Use the code below to help you get your sample.
