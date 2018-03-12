@@ -64,3 +64,37 @@ After factoring by age, it makes sense that more of the younger women (< 45) wou
 The Central Limit Theorem states that the sampling distribution of sample means is approximately Normal, regardless of the distribution of your population. For this exercise our population distribution will be a Gamma(1,2) distribution, and we’ll show that the sampling distribution of the mean is in fact normally distributed.
 
 **1.** Generate a random sample of size n = 10000 from a gamma(1,2) distribution and plot a histogram or density curve. Use the code below to help you get your sample.
+
+```{r}
+n <- 10000
+# look at ?rgamma to read about this function
+gamma_samp <- tibble(x = rgamma(n, shape = 1, scale = 2))
+gamma_samp %>% ggplot(aes(x)) + geom_histogram(bins = 200)
+```
+**2.** What is the mean and standard deviation of your sample? They should both be close to 2 because for a gamma distribution:
+<ul>
+<li>mean = shape x scale</li>
+<li>variance = shape x scale^2</li>
+</ul>
+
+The mean and standard deviation of the sample vary each time the sample is drawn. Both have been approximately 2.
+
+```{r}
+gamma_samp <- tibble(x = rgamma(10000, shape = 1, scale = 2))
+mean_samp <- gamma_samp %>% .[['x']] %>% mean()
+sd_samp <- gamma_samp %>% .[['x']] %>% sd()
+mean_samp
+sd_samp
+```
+
+**3.** Pretend the distribution of our **population** of data looks like the plot above. Now take a sample of size n = 30 from a Gamma(1,2) distribution, plot the histogram or density curve, and calculate the mean and standard deviation.
+
+```{r}
+# 
+```
+
+**4.** Take a sample of size n = 30, again from the Gamma(1,2) distribution, calculate the mean, and assign it to a vector named mean_samp. Repeat this 10000 times!!!! The code below might help.
+
+```{r}
+# 
+```
