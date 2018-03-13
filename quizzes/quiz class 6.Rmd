@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(nycflights13)
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+flights %>% sample_n(300) %>% 
+  summarize(mean_time = mean(air_time, na.rm = TRUE),
+                        sd_time = sd(air_time, na.rm = TRUE))
+```
+```{r}
+birthday <- '2000-10-08'
+birthday <- ymd(birthday)
+weekdays(birthday)
+Sys.Date() - birthday
+# olson_time_zones()
+```
+
+```{r}
+# The problem was that some single quotes were curly. That's hard to see with single quotes.
+diamonds %>% ggplot(aes(x = carat)) + geom_histogram()
+diamonds_2 <- diamonds %>% mutate(carat_fct = 
+  factor(case_when(carat < 1 ~ 'small',
+                  carat >= 1 & carat < 2 ~ 'medium',
+                  carat >= 2 ~ 'large'),
+              levels = c('small', 'medium', 'large')))
+# diamonds_2 %>% ggplot(aes(x = cut, y = price)) + 
+#  geom_boxplot() + 
+#  facet_wrap(~caret_fct)
+# Robert will put this on Canvas.
+```
+  
+From Robert on Canvas, "Simpson Paradox Diamonds"
+```{r}
+# look at a histogram of carat to pick some good cutoff points
+diamonds %>% ggplot(aes(x = carat)) + geom_histogram()
+```
+  
+```{r}
+# create a new tibble with a categorical carat variable
+diamonds_2 <- diamonds %>% mutate(carat_fct = 
+                                    factor(case_when(carat < 1 ~ 'small',
+                                                     carat >= 1 & carat < 2 ~ 'med',
+                                                     carat >= 2 ~ 'large'), 
+                                           levels = c('small', 'med', 'large')))
+# plot the boxplots, facet on carat_fct
+diamonds_2 %>% ggplot(aes(x = cut, y = price)) +
+  geom_boxplot() +
+  facet_wrap(~carat_fct)
+
+```
+  
