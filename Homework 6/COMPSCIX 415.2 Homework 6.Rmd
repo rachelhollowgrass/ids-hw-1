@@ -40,7 +40,7 @@ whickham2 <- Whickham %>% count(smoker, outcome)
 whickham2
 ggplot(whickham2) +
   geom_col(aes(x = outcome, y = n, fill = smoker), position = "stack") + 
- labs(x = "Outcome", y = "Number")
+  labs(x = "Outcome", y = "Number")
 ```
 **4.** Recode the <code>age</code> variable into an ordered factor with three categories: age <= 44, age > 44 & age <= 64, and age > 64. Now, recreate visualization from above, but facet on your new age factor. What do you see? Does it make sense?
 
@@ -69,7 +69,7 @@ The Central Limit Theorem states that the sampling distribution of sample means 
 n <- 10000
 # look at ?rgamma to read about this function
 gamma_samp <- tibble(x = rgamma(n, shape = 1, scale = 2))
-gamma_samp %>% ggplot(aes(x)) + geom_histogram(bins = 200)
+gamma_samp %>% ggplot(aes(x)) + geom_histogram(bins = 200, fill = "#493BB4")
 ```
 **2.** What is the mean and standard deviation of your sample? They should both be close to 2 because for a gamma distribution:
 <ul>
@@ -95,7 +95,7 @@ sample_size = 30
 population_sample <- sample_n(population, sample_size)
 # population_sample
 ggplot(population_sample) +
-  geom_histogram(aes(x))
+  geom_histogram(aes(x), fill = "#4C79B4")
 mean_pop_samp <- population_sample %>% .[['x']] %>% mean()
 sd_pop_samp <- population_sample %>% .[['x']] %>% sd()
 mean_pop_samp
@@ -119,8 +119,9 @@ for(i in 1:10000) {
 }
 # Convert vector to a tibble
 mean_samp <- tibble(mean_samp)
+# I could not find a way for ggplot to work with this without a variable (column) name.
 names(mean_samp)[1]<-"x"
-mean_samp %>% ggplot(aes(x)) + geom_histogram()
+mean_samp %>% ggplot(aes(x)) + geom_histogram(fill = "#18B4B4")
 
 mean_samp_mean <- mean_samp %>% .[['x']] %>% mean()
 mean_samp_sd <- mean_samp %>% .[['x']] %>% sd()
@@ -163,7 +164,7 @@ for(i in 1:10000) {
 # Convert vector to a tibble
 mean_300_samp <- tibble(mean_300_samp)
 names(mean_300_samp)[1]<-"x"
-mean_300_samp %>% ggplot(aes(x)) + geom_histogram()
+mean_300_samp %>% ggplot(aes(x)) + geom_histogram(fill = "#18B4B4")
 
 mean_300_mean <- mean_300_samp %>% .[['x']] %>% mean()
 mean_300_sd <- mean_300_samp %>% .[['x']] %>% sd()
