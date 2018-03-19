@@ -13,15 +13,15 @@ library(tidyverse)
 library(broom)
 ```
 
-```{r}
-file_path <- '../data/train.csv'
-train_data <- read_csv(file_path)
-```
 
 ### Exercise 1  
 
 _Load the train.csv dataset into R. How many observations and columns are there?_  
 
+```{r}
+file_path <- '../data/train.csv'
+train <- read_csv(file_path)
+```
 There are:
 <ul>
 <li>1460 observations</li>
@@ -29,4 +29,69 @@ There are:
 </ul>
 
 ### Exercise 2  
+
+_Normally at this point you would spend a few days on EDA, but for this homework we will get right to fitting some linear regression models._  
+
+_Our first step is to randomly split the data into train and test datasets. We will use a 70/30 split. There is an R package that will do the split for you, but let’s get some more practice with R and do it ourselves by filling in the blanks in the code below._  
+
+```{r}
+# When taking a random sample, it is often useful to set a seed so that
+# your work is reproducible. Setting a seed will guarantee that the same
+# random sample will be generated every time, so long as you always set the
+# same seed beforehand
+set.seed(29283)
+
+# This data already has an Id column which we can make use of.
+# Let's create our training set using sample_frac. Fill in the blank.
+train_set <- train %>% sample_frac(.7)
+
+# let's create our testing set using the Id column. Fill in the blanks.
+test_set <- train %>% filter(!(train$Id %in% train_set$Id))
+```
+
+### Exercise 3  
+
+_Our target is called <code>SalePrice</code>. First, we can fit a simple regression model consisting of only the intercept (the average of SalePrice). Fit the model and then use the broom package to_  
+
+<ul>
+<li>_take a look at the coefficient,_</li>
+<li>_compare the coefficient to the average value of SalePrice, and_</li>
+<li>_take a look at the R-squared._</li>
+</ul>
+
+_Use the code below and fill in the blanks._  
+
+```{r}
+# Fit a model with intercept only
+mod_0 <- lm(SalePrice ~ 1, data = train_set)
+
+# Double-check that the average SalePrice is equal to our model's coefficient
+mean(train_set$SalePrice)
+tidy(mod_0)
+
+# Check the R-squared
+glance(mod_0)
+```
+
+### Exercise 4   
+
+_Now fit a linear regression model using <code>GrLivArea</code>, <code>OverallQual</code>, and <code>Neighborhood</code> as the features. Don't forget to look at <code>data_description.txt</code> to understand what these variables mean. Ask yourself these questions before fitting the model:_  
+
+<ul>
+<li>_What kind of relationship will these features have with our target?_</li>
+<li>_Can the relationship be estimated linearly?_</li>
+<li>_Are these good features, given the problem we are trying to solve?_</li>
+</ul>
+
+_After fitting the model, output the coefficients and the R-squared using the broom package._  
+
+_Answer these questions:_  
+
+<ul>
+<li>_How would you interpret the coefficients on <code>GrLivArea</code> and <code>OverallQual</code>?_</li>
+<li>_How would you interpret the coefficient on <code>NeighborhoodBrkSide</code>?_</li>
+<li>_Are the features significant?_</li>
+<li>_Are the features practically significant?_</li>
+<li>_Is the model a good fit (to the training set)?_</li>
+</ul>
 
