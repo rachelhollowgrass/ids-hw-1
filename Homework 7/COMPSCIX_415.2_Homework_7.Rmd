@@ -1,0 +1,32 @@
+---
+title: "COMPSCIX 415.2 Homework 7"
+author: "Rachel Hollowgrass"
+date: "3/20/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+# load packages
+library(tidyverse)
+library(broom)
+```
+
+```{r}
+file_path <- '../data/train.csv'
+train_data <- read_csv(file_path)
+```
+
+### Exercise 1  
+
+_Load the train.csv dataset into R. How many observations and columns are there?_  
+
+There are:
+<ul>
+<li>1460 observations</li>
+<li>80 columns of variables (not including the ID number)</li>
+</ul>
+
+### Exercise 2  
+
