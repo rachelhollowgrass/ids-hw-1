@@ -16,23 +16,23 @@ library(broom)
 
 ### Exercise 1  
 
-_Load the train.csv dataset into R. How many observations and columns are there?_  
+Load the train.csv dataset into R. How many observations and columns are there?  
 
 ```{r}
 file_path <- '../data/train.csv'
 train <- read_csv(file_path)
 ```
-There are:
+_There are:_
 <ul>
-<li>1460 observations</li>
-<li>80 columns of variables (not including the ID number)</li>
+  <li>_1460 observations_</li>
+  <li>_80 columns of variables (not including the ID number)_</li>
 </ul>
 
 ### Exercise 2  
 
-_Normally at this point you would spend a few days on EDA, but for this homework we will get right to fitting some linear regression models._  
+Normally at this point you would spend a few days on EDA, but for this homework we will get right to fitting some linear regression models.  
 
-_Our first step is to randomly split the data into train and test datasets. We will use a 70/30 split. There is an R package that will do the split for you, but let’s get some more practice with R and do it ourselves by filling in the blanks in the code below._  
+Our first step is to randomly split the data into train and test datasets. We will use a 70/30 split. There is an R package that will do the split for you, but let’s get some more practice with R and do it ourselves by filling in the blanks in the code below.  
 
 ```{r}
 # When taking a random sample, it is often useful to set a seed so that
@@ -51,15 +51,24 @@ test_set <- train %>% filter(!(train$Id %in% train_set$Id))
 
 ### Exercise 3  
 
-_Our target is called <code>SalePrice</code>. First, we can fit a simple regression model consisting of only the intercept (the average of SalePrice). Fit the model and then use the broom package to_  
+Our target is called <code>SalePrice</code>. First, we can fit a simple regression model consisting of only the intercept (the average of SalePrice). Fit the model and then use the broom package to  
 
 <ul>
-<li>_take a look at the coefficient,_</li>
-<li>_compare the coefficient to the average value of SalePrice, and_</li>
-<li>_take a look at the R-squared._</li>
+  <li>take a look at the coefficient,  
+      _The coefficient (intercept) is 182176._
+        
+  </li>
+  <li>compare the coefficient to the average value of SalePrice, and  
+      _The average value (mean) of SalePrice is also 182176._
+        
+  </li>
+  <li>take a look at the R-squared.  
+      _The R-squared is 0, which sounds like a bad fit, but I assume it's because of <code>lm(SalePrice ~ 1 …</code>._  
+        
+  </li>
 </ul>
 
-_Use the code below and fill in the blanks._  
+Use the code below and fill in the blanks.  
 
 ```{r}
 # Fit a model with intercept only
@@ -75,23 +84,118 @@ glance(mod_0)
 
 ### Exercise 4   
 
-_Now fit a linear regression model using <code>GrLivArea</code>, <code>OverallQual</code>, and <code>Neighborhood</code> as the features. Don't forget to look at <code>data_description.txt</code> to understand what these variables mean. Ask yourself these questions before fitting the model:_  
+Now fit a linear regression model using <code>GrLivArea</code>, <code>OverallQual</code>, and <code>Neighborhood</code> as the features. Don't forget to look at <code>data_description.txt</code> to understand what these variables mean. Ask yourself these questions before fitting the model:  
 
 <ul>
-<li>_What kind of relationship will these features have with our target?_</li>
-<li>_Can the relationship be estimated linearly?_</li>
-<li>_Are these good features, given the problem we are trying to solve?_</li>
+  <li>What kind of relationship will these features have with our target?  
+      _Three features seem like reasonable choices for modeling the target, SalePrice. Location (<code>Neighborhood</code>), size (<code>GrLivArea</code>), and appearance (<code>OverallQual</code>) are often how people decide on a house to buy._  
+        
+  </li>
+  <li>Can the relationship be estimated linearly?  
+      _Of the three selected features, <code>GrLivArea</code> and <code>OverallQual</code> are quantitative, while <code>Neighborhood</code> stands out as an unordered categorical variable. The values for <code>Neighborhood</code> could perhaps be ordered by using the mean property per neighborhood, or similar measure. Also, there are 25 Neighborhoods. If there are few observations for some Neighborhoods, the significance may be poor._  
+        
+  </li>
+  <li>Are these good features, given the problem we are trying to solve?  
+      _It seems likely. If I were buying a house I might have considered <code>OverallCond</code> instead of <code>OverallQual</code> because I prioritize fewer future repairs over nicer appearance. The buying public probably differs there. Also, I wondered about walkability and proximity to sevices, but I did not see anything like either in the data description file. Those qualities may be more of an urban concept than fits Ames IA._
+  </li>
 </ul>
 
-_After fitting the model, output the coefficients and the R-squared using the broom package._  
+```{r}
+# Fit a model to three features:
+mod_1 <- lm(SalePrice ~ GrLivArea + OverallQual + Neighborhood, data = train_set)
 
-_Answer these questions:_  
+# Check the R-squared
+tidy(mod_1)
+glance(mod_1)
+```
+
+After fitting the model, output the coefficients and the R-squared using the broom package.  
+
+Answer these questions:  
 
 <ul>
-<li>_How would you interpret the coefficients on <code>GrLivArea</code> and <code>OverallQual</code>?_</li>
-<li>_How would you interpret the coefficient on <code>NeighborhoodBrkSide</code>?_</li>
-<li>_Are the features significant?_</li>
-<li>_Are the features practically significant?_</li>
-<li>_Is the model a good fit (to the training set)?_</li>
+  <li>How would you interpret the coefficients on <code>GrLivArea</code> and <code>OverallQual</code>?  
+      _I interpret the coefficent of <code>OverallQual</code> (21692) to mean that for every unit increase along the <code>OverallQual</code> scale, <code>SalePrice</code> increases by $21,692. In contrast, the coefficent of <code>GrLivArea</code> (63) means that for every increase in <code>GrLivArea</code>, <code>SalePrice</code> increases by $63. However, <code>OverallQual</code> is on a 10-point scale while <code>GrLivArea</code> ranges from 334 to 5642. This could mean that <code>OverallQual</code> represents a range of $217K (10 x $21,692) while <code>GrLivArea</code> represents a range of $334K ((5,642 - 334) x $63)._  
+        
+  </li>
+  <li>How would you interpret the coefficient on <code>NeighborhoodBrkSide</code>?  
+      _The coefficent for <code>NeighborhoodBrkSide</code> is -14064, meaning that it has a negitave effect on <code>SalePrice</code>. I would interpret that to mean that that neighborhood is less desirable than other neighborhoods such as <code>NeighborhoodStoneBr</code> with a coefficient of 65712._  
+        
+  </li>
+  <li>Are the features significant?  
+      _At 1.337e-80 and 1.389e-51, these very small p-values of <code>GrLivArea</code> and <code>OverallQual</code> make them statistically significant._  
+      _The <code>Neighborhood</code> feature has such varied but often large p-values (e.g. <code>NeighborhoodMitchel</code> with .87) that they are not significant._  
+        
+  </li>
+  <li>Are the features practically significant?  
+      _If I undersatnd correctly that the degrees of freedom is (sample size - 1), then the sample size is 28 (about 2%) of the population. Given the low p-values and small sample size, the features <code>GrLivArea</code> and <code>OverallQual</code> are practically significant._  
+        
+  </li>
+  <li>Is the model a good fit (to the training set)?  
+      _With an R-Squared of 0.8099, it seems like a good fit, but it would be worth trying to find a better fit._  
+  </li>
 </ul>
+
+### Exercise 5  
+
+Evaluate the model on test_set using the root mean squared error (RMSE). Use the <code>predict</code> function to get the model predictions for the testing set. Recall that RMSE is the square root of the mean of the squared errors:  
+
+![](../images/rmse.png)  
+
+Hint: use the <code>sqrt()</code> and <code>mean()</code> functions:
+
+```{r}
+
+# The code below keeps giving me an error, which I don't understand.
+#    Error in Ops.data.frame(test_set, mod_1) : list of length 13 not meaningful
+# 
+# For that reason, I'm commenting out the code:
+# 
+# test_predictions <- predict(mod_1, newdata = test_set)
+# rmse <- sqrt(mean((test_set - mod_1)^2))
+
+```
+
+### Exercise 6 (OPTIONAL - won’t be graded)  
+
+Feel free to play around with linear regression. Add some other features and see how the model results change. Test the model on test_set to compare the RMSE’s.  
+
+### Exercise 7  
+
+One downside of the linear model is that it is sensitive to unusual values because the distance incorporates a squared term. Fit a linear model to the simulated data below, and visualise the results. Rerun a few times to generate different simulated datasets. What do you notice about the model?  
+
+_For the three runs I notice that the confidence interval is consistently narrower in the middle of the range, around x = 5._
+
+```{r}
+sim1a1 <- tibble(
+   x = rep(1:10, each = 3),
+   y = x * 1.5 + 6 + rt(length(x), df = 2)
+ )
+
+ggplot(sim1a1, aes(x, y)) + 
+  geom_point() +
+  geom_smooth(method='lm') + 
+  ggtitle("Run 1")
+
+sim1a2 <- tibble(
+   x = rep(1:10, each = 3),
+   y = x * 1.5 + 6 + rt(length(x), df = 2)
+ )
+
+ggplot(sim1a2, aes(x, y)) + 
+  geom_point() +
+  geom_smooth(method='lm') + 
+  ggtitle("Run 2")
+
+sim1a3 <- tibble(
+   x = rep(1:10, each = 3),
+   y = x * 1.5 + 6 + rt(length(x), df = 2)
+ )
+
+ggplot(sim1a3, aes(x, y)) + 
+  geom_point() +
+  geom_smooth(method='lm') + 
+  ggtitle("Run 3")
+
+```
 
