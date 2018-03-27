@@ -1,0 +1,180 @@
+---
+title: "COMPSCIX 415.2 Homework 8"
+author: "Rachel Hollowgrass"
+date: "3/27/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+# load packages
+library(tidyverse)
+library(broom)
+```
+
+
+### Exercise 1  
+
+Load the train.csv dataset into R. How many observations and columns are there?  
+
+```{r}
+file_path <- '../data/homework8/train.csv'
+train <- read_csv(file_path)
+train
+```
+
+_There are:_
+<ul>
+  <li>_891 observations_</li>
+  <li>_12 columns of variables (including the ID number <codePassengerId</code>)_</li>
+</ul>
+
+Convert the target variable to a factor because it will be loaded into R as an integer by default.  
+
+```{r}
+# Survived is not a continous variable, so make a factor for it.
+train <- train %>% mutate(Survived = 
+  factor(case_when(
+                  Survived == 1 ~ 'True',
+                  Survived == 0 ~ 'False'
+                  ),
+            levels = c('True', 'False')
+         )
+  )
+
+# Pclass is also not a continous variable, so make a factor for it.
+train <- train %>% mutate(Pclass = 
+  factor(case_when(
+                  Pclass == 1 ~ 'First',
+                  Pclass == 2 ~ 'Second',
+                  Pclass == 3 ~ 'Third'
+                  ),
+            levels = c('First', 'Second', 'Third')
+         )
+  )
+train
+```
+
+### Exercise 2  
+
+Our first step is to randomly split the data into train and test datasets. We will use a 70/30 split, and use the random seed of 29283 so that we all should get the same training and test set.
+
+```{r}
+set.seed(29283)
+
+train_set <- train %>% sample_frac(.7)
+
+test_set <- train %>% filter(!(train$PassengerId %in% train_set$PassengerId))
+```
+
+### Exercise 3  
+
+Our target is called <code>Survived</code>. First, fit a logistic regression model using <code>Pclass</code>, <code>Sex</code>, <code>Fare</code> as your three features. Fit the model using the <code>glm()</code> function.  
+
+Ask **yourself** these questions before fitting the model:  
+
+<ul>
+  <li>What kind of relationship will these features have with the probability of survival?  
+  _I expect that <code>Pclass</code> will have a negative correlation (lower values such as 1st and 2nd class = higher probability of survival), <code>Fare</code> will have a positive correlation (higher fare = higher probability), and when <code>Sex</code> = <code>female</code> it will also have a positive correlation._</li>
+  <li>Are these good features, given the problem we are trying to solve?  
+  _<code>Pclass</code> and <code>Fare</code> seem redundant. Based on the phrase "Women and children first!" I might have chosen <code>Pclass</code>, <code>Sex</code> and <code>Age</code> instead._</li>
+</ul>
+
+```{r}
+library(broom)
+
+# Fit a model with intercept only
+mod_1 <- glm(Survived ~ Pclass + Sex + Fare, data = train_set, family = 'binomial')
+
+# take a look at the features and coefficients
+tidy(mod_1)
+```
+
+After fitting the model, output the coefficients using the broom package and answer these questions:
+
+<ul>
+  <li>How would you interpret the coefficients?  
+  _With a coefficient near 0, <code>Fare</code> seems to have little to do with the target. <code>Sex</code> at 2.84 seems most relevant, followed by <code>Pclass</code> at 0.88._</li>
+  <li>Are the features significant?  
+  _Only <code>Pclass</code> and <code>Sex</code> are significant._</li>
+</ul>
+
+### Exercise 4  
+
+Now, let’s fit a model using a classification tree, using the same features and plot the final decision tree. Use the code below for help.   
+
+Answer these questions:  
+
+<ul>
+  <li>Describe in words one path a Titanic passenger might take down the tree. (Hint: look at your tree, choose a path from the top to a terminal node, and describe the path like this - _a male passenger who paid a fare > 30 and was in first class has a high probability of survival)_  
+  _A female passenger who was in first or second class had the highest probability of survival._</li>
+  <li>Does anything surprise you about the fitted tree?  
+  _Class and ticket price seemed to have nothing to do with the probability of survival for male passengers._</li>
+</ul>
+
+```{r}
+library(rpart)
+library(partykit)
+
+tree_mod <- rpart(Survived ~ Pclass + Sex + Fare, data = train_set)
+
+plot(as.party(tree_mod))
+```
+
+### Exercise 5  
+
+Evaluate both the logistic regression model and classification tree on the <code>test_set</code>. First, use the <code>predict()</code> function to get the model predictions for the testing set. Use the code below for help.  
+
+It may seem odd that we are using the same <code>predict()</code> function to make predictions for two completely different types of models (logistic regression and classification tree). This is a feature of R that there are many generic functions that you can apply to different R objects. Depending on the class of the object that is passed to the generic function, R will know which definition of the generic function to use on that object.  
+
+```{r}
+test_logit <- predict(mod_1, newdata = test_set, type = 'response')
+test_tree <- predict(tree_mod, newdata = test_set)[,2]
+```
+
+(a) Next, we will plot the ROC curves from both models using the code below. Don’t just copy and paste the code. Go through it line by line and see what it is doing. Recall that predictions from your decision tree are given as a two column matrix.
+
+```{r}
+library(ROCR)
+
+# create the prediction objects for both models
+pred_logit <- prediction(predictions = test_logit, labels = test_set$Survived)
+pred_tree <- prediction(predictions = test_tree, labels = test_set$Survived)
+
+# get the FPR and TPR for the logistic model
+# recall that the ROC curve plots the FPR on the x-axis
+perf_logit <- performance(pred_logit, measure = 'tpr', x.measure = 'fpr')
+perf_logit_tbl <- tibble(perf_logit@x.values[[1]], perf_logit@y.values[[1]])
+
+# Change the names of the columns of the tibble
+names(perf_logit_tbl) <- c('fpr', 'tpr')
+
+# get the FPR and TPR for the tree model
+perf_tree <- performance(pred_tree, measure = 'tpr', x.measure = 'fpr')
+perf_tree_tbl <- tibble(perf_tree@x.values[[1]], perf_tree@y.values[[1]])
+
+# Change the names of the columns of the tibble
+names(perf_tree_tbl) <- c('fpr', 'tpr')
+
+# Plotting function for plotting a nice ROC curve using ggplot
+plot_roc <- function(perf_tbl) {
+  p <- ggplot(data = perf_tbl, aes(x = fpr, y = tpr)) +
+  geom_line(color = 'blue') +
+  geom_abline(intercept = 0, slope = 1, lty = 3) +
+  labs(x = 'False positive rate', y = 'True positive rate') +
+  theme_bw()
+  return(p)
+}
+
+# Create the ROC curves using the function we created above
+plot_roc(perf_logit_tbl)
+plot_roc(perf_tree_tbl)
+```
+
+(b) Now, use the <code>performance()</code> function to calculate the area under the curve (AUC) for both ROC curves. Check <code>?performanc</code>e for help on plugging in the right <code>measure</code> argument.
+
+```{r}
+
+```
+
