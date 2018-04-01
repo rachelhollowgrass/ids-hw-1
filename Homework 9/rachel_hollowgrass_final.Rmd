@@ -104,7 +104,7 @@ We will use this same dataset for this entire assignment.
   <li>Use the code below to take 100 bootstrap samples of your data. Confirm that the result is a <code>tibble</code> with a <code>list</code> column of <code>resample</code> objects - each <code>resample</code> object is a bootstrap sample of the titanic dataset.</li>
 </ol>
 
-_I've displayed <code>titanic_boot</code>, which confirms that the result has a column of 100 <code>resample</code> objects
+_I've displayed <code>titanic_boot</code>, which confirms that the result has a column of 100 <code>resample</code> objects._
 
 ```{r}
 # These two lines were already called in the first code snippet.
@@ -115,4 +115,18 @@ titanic_boot <- bootstrap(data = train, n = 100)
 
 # Displaying titanic_boot confirms that the result has a column of 100 <code>resample</code> objects
 titanic_boot
+```
+
+<ol start="3">
+  <li>Confirm that some of your bootstrap samples are in fact bootstrap samples (meaning they should have some rows that are repeated). You can use the <code>n_distinct()</code> function from <code>dplyr</code> to see that your samples have different numbers of unique rows. Use the code below to help you extract some of the <code>resample</code> objects from the <code>strap</code> column (which is an R <code>list</code>), convert them to tibbles, and then count distinct rows. Use the code below, no changes necessary.</li>
+</ol>
+
+```{r}
+# since the strap column of titanic_boot is a list, we can
+# extract the resampled data using the double brackets [[]],
+# and just pick out a few of them to compare the number of
+# distinct rows
+as.tibble(titanic_boot$strap[[1]]) %>% n_distinct()
+as.tibble(titanic_boot$strap[[2]]) %>% n_distinct()
+as.tibble(titanic_boot$strap[[3]]) %>% n_distinct()
 ```
