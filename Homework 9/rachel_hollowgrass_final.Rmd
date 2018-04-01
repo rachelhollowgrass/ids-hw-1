@@ -130,3 +130,52 @@ as.tibble(titanic_boot$strap[[1]]) %>% n_distinct()
 as.tibble(titanic_boot$strap[[2]]) %>% n_distinct()
 as.tibble(titanic_boot$strap[[3]]) %>% n_distinct()
 ```
+
+<ol start="4">
+  <li>Now, let’s demonstrate the Central Limit Theorem using the <code>Age</code> column. We’ll iterate through all 100 bootstrap samples, take the mean of <code>Age</code>, and collect the results.</li>
+</ol>
+
+<ul>
+  <li>We will define our own function to pull out the mean of <code>Age</code> from each bootstrap sample and</li>
+  <li>create our own <code>for</code> loop to iterate through.</li>
+</ul>
+
+Use the code below and fill in the blanks.  
+
+```{r}
+age_mean <- function(input_data) {
+  data <- as.tibble(input_data) # convert input data set to a tibble
+  mean_age <- mean(data$Age, na.rm = TRUE) # take the mean of Age, remove NAs
+  return(mean_age) # return the mean value of Age from data
+}
+
+
+# loop through the 100 bootstrap samples and use the age_mean()
+# function
+all_means <- rep(NA, 100)
+
+# start the loop
+for(i in 1:100) {
+  all_means[i] <- age_mean(titanic_boot$strap[[i]])
+}
+
+# take a look at some of the means you calculated from your samples
+head(all_means)
+
+# convert to a tibble so we can use if for plotting
+all_means <- tibble(all_means = all_means)
+all_means
+```
+
+<ol start="5">
+  <li>Plot a histogram of <code>all_means</code>.</li>
+</ol>
+
+```{r}
+ggplot(all_means) +
+  geom_histogram(aes(all_means), binwidth=0.2)
+```
+
+<ol start="6">
+  <li>Find the standard error of the sample mean of <code>Age</code> using your boostrap sample means. Compare the empirical standard error to the theoretical standard error.</li>
+</ol>
