@@ -133,7 +133,7 @@ library(partykit)
 library(randomForest)</code></pre>
 <div id="bootstrapping-10-points" class="section level3">
 <h3>Bootstrapping (10 points)</h3>
-<ol>
+<ol start="1">
 <li>
 Follow these steps:
 </li>
@@ -143,7 +143,7 @@ Follow these steps:
 Load the train.csv dataset into R.
 </li>
 <li>
-Convert all <code>characte</code>r columns into unordered <code>factors</code>.
+Convert all <code>character</code> columns into unordered <code>factors</code>.
 </li>
 <li>
 Convert the <code>Survived</code> column into an unordered factor because it is loaded as an integer by default.
@@ -152,6 +152,111 @@ Convert the <code>Survived</code> column into an unordered factor because it is 
 Take a <code>glimpse</code> of your data to confirm that all of the columns were converted correctly.
 </li>
 </ul>
+<pre class="r"><code>file_path &lt;- '../data/homework9/train.csv'
+train &lt;- read_csv(file_path)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   PassengerId = col_integer(),
+##   Survived = col_integer(),
+##   Pclass = col_integer(),
+##   Name = col_character(),
+##   Sex = col_character(),
+##   Age = col_double(),
+##   SibSp = col_integer(),
+##   Parch = col_integer(),
+##   Ticket = col_character(),
+##   Fare = col_double(),
+##   Cabin = col_character(),
+##   Embarked = col_character()
+## )</code></pre>
+<pre class="r"><code>train</code></pre>
+<pre><code>## # A tibble: 891 x 12
+##    PassengerId Survived Pclass Name   Sex     Age SibSp Parch Ticket  Fare
+##          &lt;int&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;
+##  1           1        0      3 Braun… male  22.0      1     0 A/5 2…  7.25
+##  2           2        1      1 Cumin… fema… 38.0      1     0 PC 17… 71.3 
+##  3           3        1      3 Heikk… fema… 26.0      0     0 STON/…  7.92
+##  4           4        1      1 Futre… fema… 35.0      1     0 113803 53.1 
+##  5           5        0      3 Allen… male  35.0      0     0 373450  8.05
+##  6           6        0      3 Moran… male  NA        0     0 330877  8.46
+##  7           7        0      1 McCar… male  54.0      0     0 17463  51.9 
+##  8           8        0      3 Palss… male   2.00     3     1 349909 21.1 
+##  9           9        1      3 Johns… fema… 27.0      0     2 347742 11.1 
+## 10          10        1      2 Nasse… fema… 14.0      1     0 237736 30.1 
+## # ... with 881 more rows, and 2 more variables: Cabin &lt;chr&gt;,
+## #   Embarked &lt;chr&gt;</code></pre>
+<pre class="r"><code># Character vars:
+# Name = col_character(),
+# Sex = col_character(),
+# Ticket = col_character(),
+# Cabin = col_character(),
+# Embarked = col_character()
+
+# Not factoring Name, Ticket or Cabin because each instance is unique or almost unique and would not factor well.
+# Factors are unordered by default, so no need to add ', ordered = FALSE' after the vector assignment.
+
+# Survived is not a continous variable, so make a factor for it.
+train &lt;- train %&gt;% mutate(Survived = 
+  factor(case_when(
+                  Survived == 1 ~ 'True',
+                  Survived == 0 ~ 'False'
+                  ),
+            levels = c('True', 'False')
+         )
+  )
+
+# Sex is also not a continous variable, so make a factor for it.
+train &lt;- train %&gt;% mutate(Sex = 
+  factor(case_when(
+                  Sex == &quot;male&quot; ~ 'Man',
+                  Sex == &quot;female&quot; ~ 'Woman'
+               ),
+            levels = c('Man', 'Woman')
+         )
+  )
+
+# Pclass is also not a continous variable, so make a factor for it.
+train &lt;- train %&gt;% mutate(Pclass = 
+  factor(case_when(
+                  Pclass == 1 ~ 'First',
+                  Pclass == 2 ~ 'Second',
+                  Pclass == 3 ~ 'Third'
+                  ),
+            levels = c('First', 'Second', 'Third')
+         )
+  )
+
+# Embarked is also not a continous variable, so make a factor for it.
+# S = Southampton, England
+# C = Cherbourg, France
+# Q = Queenstown, Ireland
+# Never arrived at New York
+
+train &lt;- train %&gt;% mutate(Embarked = 
+  factor(case_when(
+                  Embarked == &quot;C&quot; ~ 'Cherbourg',
+                  Embarked == &quot;Q&quot; ~ 'Queenstown',
+                  Embarked == &quot;S&quot; ~ 'Southampton'
+                  ),
+            levels = c('Southampton', 'Cherbourg', 'Queenstown')
+         )
+  )
+
+glimpse(train)</code></pre>
+<pre><code>## Observations: 891
+## Variables: 12
+## $ PassengerId &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,...
+## $ Survived    &lt;fct&gt; False, True, True, True, False, False, False, Fals...
+## $ Pclass      &lt;fct&gt; Third, First, Third, First, Third, Third, First, T...
+## $ Name        &lt;chr&gt; &quot;Braund, Mr. Owen Harris&quot;, &quot;Cumings, Mrs. John Bra...
+## $ Sex         &lt;fct&gt; Man, Woman, Woman, Woman, Man, Man, Man, Man, Woma...
+## $ Age         &lt;dbl&gt; 22, 38, 26, 35, 35, NA, 54, 2, 27, 14, 4, 58, 20, ...
+## $ SibSp       &lt;int&gt; 1, 1, 0, 1, 0, 0, 0, 3, 0, 1, 1, 0, 0, 1, 0, 0, 4,...
+## $ Parch       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 1, 0, 0, 5, 0, 0, 1,...
+## $ Ticket      &lt;chr&gt; &quot;A/5 21171&quot;, &quot;PC 17599&quot;, &quot;STON/O2. 3101282&quot;, &quot;1138...
+## $ Fare        &lt;dbl&gt; 7.2500, 71.2833, 7.9250, 53.1000, 8.0500, 8.4583, ...
+## $ Cabin       &lt;chr&gt; NA, &quot;C85&quot;, NA, &quot;C123&quot;, NA, NA, &quot;E46&quot;, NA, NA, NA, ...
+## $ Embarked    &lt;fct&gt; Southampton, Cherbourg, Southampton, Southampton, ...</code></pre>
 <p>We will use this same dataset for this entire assignment.</p>
 <ol start="2">
 <li>

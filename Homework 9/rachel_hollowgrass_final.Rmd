@@ -46,6 +46,7 @@ train
 # Embarked = col_character()
 
 # Not factoring Name, Ticket or Cabin because each instance is unique or almost unique and would not factor well.
+# Factors are unordered by default, so no need to add ', ordered = FALSE' after the vector assignment.
 
 # Survived is not a continous variable, so make a factor for it.
 train <- train %>% mutate(Survived = 
@@ -94,7 +95,7 @@ train <- train %>% mutate(Embarked =
          )
   )
 
-train
+glimpse(train)
 ```
 
 We will use this same dataset for this entire assignment.
@@ -102,8 +103,6 @@ We will use this same dataset for this entire assignment.
 <ol start="2">
   <li>Use the code below to take 100 bootstrap samples of your data. Confirm that the result is a <code>tibble</code> with a <code>list</code> column of <code>resample</code> objects - each <code>resample</code> object is a bootstrap sample of the titanic dataset.</li>
 </ol>
-
-
 
 ```{r}
 # file_path <- '../data/homework9/train.csv'
