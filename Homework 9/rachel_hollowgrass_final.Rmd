@@ -1,0 +1,112 @@
+---
+title: "COMPSCIX 415.2 Homework 9/Final"
+author: "Rachel Hollowgrass"
+date: "4/3/2018"
+output:
+ html_document:
+  self_contained: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+# load packages
+library(tidyverse)
+library(modelr)
+library(rpart)
+library(partykit)
+library(randomForest)
+```
+
+
+### Bootstrapping (10 points)  
+
+<ol start="1">
+  <li>Follow these steps:</li>
+</ol>
+
+<ul>
+  <li>Load the train.csv dataset into R.</li>
+  <li>Convert all <code>character</code> columns into unordered <code>factors</code>.</li>
+  <li>Convert the <code>Survived</code> column into an unordered factor because it is loaded as an integer by default.</li>
+  <li>Take a <code>glimpse</code> of your data to confirm that all of the columns were converted correctly.</li>
+</ul>
+
+```{r}
+file_path <- '../data/homework9/train.csv'
+train <- read_csv(file_path)
+train
+```
+
+
+```{r}
+# Character vars:
+# Name = col_character(),
+# Sex = col_character(),
+# Ticket = col_character(),
+# Cabin = col_character(),
+# Embarked = col_character()
+
+# Not factoring Name, Ticket or Cabin because each instance is unique or almost unique and would not factor well.
+
+# Survived is not a continous variable, so make a factor for it.
+train <- train %>% mutate(Survived = 
+  factor(case_when(
+                  Survived == 1 ~ 'True',
+                  Survived == 0 ~ 'False'
+                  ),
+            levels = c('True', 'False')
+         )
+  )
+
+# Sex is also not a continous variable, so make a factor for it.
+train <- train %>% mutate(Sex = 
+  factor(case_when(
+                  Sex == "male" ~ 'Man',
+                  Sex == "female" ~ 'Woman'
+               ),
+            levels = c('Man', 'Woman')
+         )
+  )
+
+# Pclass is also not a continous variable, so make a factor for it.
+train <- train %>% mutate(Pclass = 
+  factor(case_when(
+                  Pclass == 1 ~ 'First',
+                  Pclass == 2 ~ 'Second',
+                  Pclass == 3 ~ 'Third'
+                  ),
+            levels = c('First', 'Second', 'Third')
+         )
+  )
+
+# Embarked is also not a continous variable, so make a factor for it.
+# S = Southampton, England
+# C = Cherbourg, France
+# Q = Queenstown, Ireland
+# Never arrived at New York
+
+train <- train %>% mutate(Embarked = 
+  factor(case_when(
+                  Embarked == "C" ~ 'Cherbourg',
+                  Embarked == "Q" ~ 'Queenstown',
+                  Embarked == "S" ~ 'Southampton'
+                  ),
+            levels = c('Southampton', 'Cherbourg', 'Queenstown')
+         )
+  )
+
+train
+```
+
+We will use this same dataset for this entire assignment.
+
+<ol start="2">
+  <li>Use the code below to take 100 bootstrap samples of your data. Confirm that the result is a <code>tibble</code> with a <code>list</code> column of <code>resample</code> objects - each <code>resample</code> object is a bootstrap sample of the titanic dataset.</li>
+</ol>
+
+
+
+```{r}
+# file_path <- '../data/homework9/train.csv'
+# train <- read_csv(file_path)
+# train
+```
