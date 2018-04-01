@@ -104,8 +104,15 @@ We will use this same dataset for this entire assignment.
   <li>Use the code below to take 100 bootstrap samples of your data. Confirm that the result is a <code>tibble</code> with a <code>list</code> column of <code>resample</code> objects - each <code>resample</code> object is a bootstrap sample of the titanic dataset.</li>
 </ol>
 
+_I've displayed <code>titanic_boot</code>, which confirms that the result has a column of 100 <code>resample</code> objects
+
 ```{r}
-# file_path <- '../data/homework9/train.csv'
-# train <- read_csv(file_path)
-# train
+# These two lines were already called in the first code snippet.
+# library(tidyverse)
+# library(modelr)
+
+titanic_boot <- bootstrap(data = train, n = 100)
+
+# Displaying titanic_boot confirms that the result has a column of 100 <code>resample</code> objects
+titanic_boot
 ```
