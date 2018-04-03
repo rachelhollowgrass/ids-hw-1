@@ -284,3 +284,33 @@ plot(as.party(tree_mod_old), main="Tree from Last Week (Homework 8)")
 plot(as.party(tree_mod), main="Tree for Final Exam (Homework 9)")
 ```
 
+<ol start="3">
+  <li>Fit a random forest to <code>train_set</code> using the <code>randomForest</code> package, and using <code>Pclass</code>, <code>Sex</code>, <code>Age</code>, <code>SibSp</code>, <code>Parch</code>, <code>Fare</code>, <code>Embarked</code> as the features. We’ll use 500 trees and sample four features at each split. Use the code below and fill in the blanks.</li>
+</ol>
+
+```{r}
+rf_mod <- randomForest(Pclass ~ Sex + Age + SibSp + Parch + Fare + Embarked,  
+                         data = train_set, 
+                         ntrees = 500, 
+                         mtry = 4, 
+                         na.action = na.roughfix)
+```
+
+<ol start="4">
+  <li>Compare the performance of the decision tree with the random forest using the <code>ROCR</code> package and the <code>AUC</code>. Which model performs the best?
+Here’s some code to get you started.</li>
+</ol>
+
+```{r}
+library(ROCR)
+
+rf_preds <- predict(rf_mod, newdata = test_set, type = 'prob')[,2]
+tree_preds <- predict(tree_mod, newdata = test_set)[,2]
+
+pred_rf <- prediction(predictions = rf_preds, labels = test_set$Survived)
+pred_tree <- prediction(predictions = tree_preds, labels = test_set$Survived)
+```
+
+
+
+
