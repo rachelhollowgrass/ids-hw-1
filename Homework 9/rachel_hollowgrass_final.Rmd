@@ -272,7 +272,7 @@ test_set <- train %>% filter(!(train$PassengerId %in% train_set$PassengerId))
 <ul>
   <li>Plot the tree using the <code>partykit</code> package.</li>
   <li>What do you notice about this tree compared to the one from last week which only contained three features?  
-  _In both the old and the new trees, Sex and Pclass are still the strongest determinants of survival. For men, age emerges are more important than Fare. For women, Fare is more important than Age._</li>
+  _In both the tree form last week and the new trees, Sex and Pclass are still the strongest determinants of survival. For men, age emerges are more important than Fare. For women, Fare is more important than Age._</li>
 </ul>
 
 ```{r}
@@ -280,7 +280,7 @@ test_set <- train %>% filter(!(train$PassengerId %in% train_set$PassengerId))
 tree_mod_old <- rpart(Survived ~ Pclass + Sex + Fare, data = train_set)
 tree_mod <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data = train_set)
 
-plot(as.party(tree_mod_old))
-plot(as.party(tree_mod))
+plot(as.party(tree_mod_old), main="Tree from Last Week (Homework 8)")
+plot(as.party(tree_mod), main="Tree for Final Exam (Homework 9)")
 ```
 
