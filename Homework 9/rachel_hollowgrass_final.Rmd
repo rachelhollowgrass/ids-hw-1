@@ -45,6 +45,7 @@ train
 # Cabin = col_character(),
 # Embarked = col_character()
 
+# •• Look for a function that creates factors for multiple columns at once. ••
 # Not factoring Name, Ticket or Cabin because each instance is unique or almost unique and would not factor well.
 # Factors are unordered by default, so no need to add ', ordered = FALSE' after the vector assignment.
 
@@ -200,5 +201,86 @@ paste("Theoretical standard error:", toString(se_theoretical))
 
 "As expected, the empirical standard error is smaller than the theoretical standard error."
 
+```
+
+### Random forest (10 points)  
+
+On the last homework, we fit a decision tree to the Titanic data set to predict the probability of survival given the features. This week we’ll use the random forest and compare our results to the decision tree.  
+
+<ol start="1">
+  <li>Randomly split your data into training and testing using the code below so that we all have the same sets.</li>
+</ol>
+
+```{r}
+
+file_path <- '../data/homework9/train.csv'
+train <- read_csv(file_path)
+
+train <- train %>% mutate(Survived = 
+  factor(case_when(
+                  Survived == 1 ~ 'True',
+                  Survived == 0 ~ 'False'
+                  ),
+            levels = c('True', 'False')
+         )
+  )
+
+train <- train %>% mutate(Sex = 
+  factor(case_when(
+                  Sex == "male" ~ 'Man',
+                  Sex == "female" ~ 'Woman'
+               ),
+            levels = c('Man', 'Woman')
+         )
+  )
+
+train <- train %>% mutate(Pclass = 
+  factor(case_when(
+                  Pclass == 1 ~ 'First',
+                  Pclass == 2 ~ 'Second',
+                  Pclass == 3 ~ 'Third'
+                  ),
+            levels = c('First', 'Second', 'Third')
+         )
+  )
+
+train <- train %>% mutate(Embarked = 
+  factor(case_when(
+                  Embarked == "C" ~ 'Cherbourg',
+                  Embarked == "Q" ~ 'Queenstown',
+                  Embarked == "S" ~ 'Southampton'
+                  ),
+            levels = c('Southampton', 'Cherbourg', 'Queenstown')
+         )
+  )
+
+# set.seed(987)
+# model_data <- resample_partition(train, c(test = 0.3, train = 0.7))
+# train_set <- as.tibble(model_data$PassengerId)
+# test_set <- as.tibble(model_data$PassengerId)
+
+set.seed(29283)
+train_set <- train %>% sample_frac(.7)
+test_set <- train %>% filter(!(train$PassengerId %in% train_set$PassengerId))
+
+```
+
+<ol start="2">
+  <li>Fit a decision tree to <code>train_set</code> using the <code>rpart</code> package, and using <code>Pclass</code>, <code>Sex</code>, <code>Age</code>, <code>SibSp</code>, <code>Parch</code>, <code>Fare</code>, <code>Embarked</code> as the features.</li>
+</ol>
+
+<ul>
+  <li>Plot the tree using the <code>partykit</code> package.</li>
+  <li>What do you notice about this tree compared to the one from last week which only contained three features?  
+  _In both the old and the new trees, Sex and Pclass are still the strongest determinants of survival. For men, age emerges are more important than Fare. For women, Fare is more important than Age._</li>
+</ul>
+
+```{r}
+
+tree_mod_old <- rpart(Survived ~ Pclass + Sex + Fare, data = train_set)
+tree_mod <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data = train_set)
+
+plot(as.party(tree_mod_old))
+plot(as.party(tree_mod))
 ```
 
